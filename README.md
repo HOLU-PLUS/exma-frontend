@@ -1,4 +1,4 @@
-# Este proyecto es para un centro odontologico
+# Este proyecto es el frotnend de EXMA
 
 Este proyecto esta construido con
 React + TypeScript + Vite + MUI

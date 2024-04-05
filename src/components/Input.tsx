@@ -13,6 +13,11 @@ export const ComponentInput = memo((
         multiline = false,
         error = false,
         helperText = '',
+        disabled = false,
+        customSx = {},
+        size = 'Normal',
+        width = '100%',
+        height = '50px'
     }:
         {
             id?: string,
@@ -25,6 +30,11 @@ export const ComponentInput = memo((
             multiline?: boolean
             error?: boolean,
             helperText?: string,
+            disabled?: boolean,
+            customSx?: object
+            size?: any,
+            width?: any,
+            height?: any
         }) => {
     return (
         <TextField
@@ -34,33 +44,39 @@ export const ComponentInput = memo((
             label={label}
             name={name}
             value={value}
+            disabled={disabled}
+            size={size}
             onChange={onChange}
             autoComplete='off'
-            style={{ width: '100%' }}
+            style={{ width: width }}
             error={error}
             helperText={helperText}
             InputProps={{
                 endAdornment,
                 style: {
                     color: 'black',
-                    height: '50px',
+                    height: height,
                     borderColor: '#0B815A'
                 },
             }}
             sx={{
-                padding: '2px',
-                margin: '0px',
-                '& label.Mui-focused': {
-                    color: 'black',
+                ...{
+                    padding: '2px',
+                    margin: '0px',
+                    '& label.Mui-focused': {
+                        color: 'black',
+                    },
+                    '& label:not(.Mui-focused)': {
+                        color: 'black',
+                    },
+                    '& .MuiOutlinedInput-root': {
+                        borderRadius: '10px',
+                        height: 'fit-content',
+                        '& fieldset': { borderColor: '#2F3746' },
+                        '&:hover fieldset': { borderColor: '#0B815A' },
+                    },
                 },
-                '& label:not(.Mui-focused)': {
-                    color: 'black', // Cambia el color del texto del Label a negro cuando no está enfocado
-                },
-                '& .MuiOutlinedInput-root': {
-                    borderRadius: '10px',
-                    height: 'fit-content',
-                    '& fieldset': { borderColor: '#2F3746' },
-                },
+                ...customSx,
             }}
         />
     );

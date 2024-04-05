@@ -1,43 +1,43 @@
 import { useDispatch, useSelector } from 'react-redux';
 import { coffeApi } from '@/services';
-import { setGuests, setAddGuest, setUpdateGuest, setDeleteGuest } from '@/store';
+import { setGuests, setDeleteGuest } from '@/store';
 import Swal from 'sweetalert2';
 
 export const useGuestStore = () => {
   const { guests } = useSelector((state: any) => state.guests);
   const dispatch = useDispatch();
 
-  const getGuests = async () => {
-    console.log('OBTENIENDO INVITADOS')
-    const { data } = await coffeApi.get('/guest');
-    console.log(data)
-    dispatch(setGuests({ guests: data.guests }));
+  const logInGuest = async (body: object) => {
+    const { data } = await coffeApi.post('/auth/guest/', body);
+    console.log(data);
+    Swal.fire('Invitado creado correctamente', '', 'success');
+
   }
 
-  const createGuest = async (body: object) => {
+  const registerGuest = async (body: object) => {
     try {
-      console.log('CREANDO INVITADO')
-      console.log(body)
-      const { data } = await coffeApi.post(`/guest`, body);
-      console.log(data)
-      dispatch(setAddGuest({ guest: data.guest }));
+      console.log('CREANDO UN INVITADO');
+      const { data } = await coffeApi.post('/guest/', body);
+      console.log(data);
       Swal.fire('Invitado creado correctamente', '', 'success');
     } catch (error: any) {
       Swal.fire('Oops ocurrio algo', error.response.data.msg, 'error');
     }
   }
 
-  const updateGuest = async (id: number, body: object) => {
+  const getGuests = async () => {
     try {
-      console.log('MODIFICANDO INVITADO')
-      const { data } = await coffeApi.put(`/guest/${id}`, body);
+      console.log('OBTENIENDO INVITADOS')
+      const { data } = await coffeApi.get('/guest');
       console.log(data)
-      dispatch(setUpdateGuest({ guest: data.guest }));
-      Swal.fire('Se modifico el invitado', '', 'success');
+      dispatch(setGuests({ guests: data.guests }));
     } catch (error: any) {
       Swal.fire('Oops ocurrio algo', error.response.data.msg, 'error');
+
     }
   }
+
+
 
   const deleteGuest = async (id: number) => {
     try {
@@ -77,9 +77,9 @@ export const useGuestStore = () => {
     //* Propiedades
     guests,
     //* Métodos
+    logInGuest,
+    registerGuest,
     getGuests,
-    createGuest,
-    updateGuest,
     deleteGuest,
   }
 }

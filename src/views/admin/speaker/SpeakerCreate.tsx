@@ -1,6 +1,6 @@
 import { ComponentDate, ComponentInput } from "@/components"
 import { useForm,  useSpeakerStore } from "@/hooks";
-import { FormPatientModel, FormPatientValidations } from "@/models";
+import { FormGuestModel, FormGuestValidations } from "@/models";
 import { Button, Dialog, DialogActions, DialogContent, DialogTitle, Grid } from "@mui/material"
 import { FormEvent, useState } from "react";
 
@@ -10,7 +10,7 @@ interface createProps {
   item: any;
 }
 
-const formFields: FormPatientModel = {
+const formFields: FormGuestModel = {
   identityCard: 0,
   name: '',
   lastName: '',
@@ -21,7 +21,7 @@ const formFields: FormPatientModel = {
   bloodType: '',
 }
 
-const formValidations: FormPatientValidations = {
+const formValidations: FormGuestValidations = {
   identityCard: [(value: number) => value != 0, 'Debe ingresar el numero de carnet'],
   name: [(value: string) => value.length >= 1, 'Debe ingresar el nombre'],
   lastName: [(value: string) => value.length >= 1, 'Debe ingresar el apellido'],
