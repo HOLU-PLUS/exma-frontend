@@ -2,6 +2,7 @@ import { useDispatch, useSelector } from 'react-redux';
 import { coffeApi } from '@/services';
 import { setGuests, setDeleteGuest } from '@/store';
 import Swal from 'sweetalert2';
+import { onLoginCustomer } from "@/store";
 
 export const useGuestStore = () => {
   const { guests } = useSelector((state: any) => state.guests);
@@ -10,7 +11,10 @@ export const useGuestStore = () => {
   const logInGuest = async (body: object) => {
     const { data } = await coffeApi.post('/auth/guest/', body);
     console.log(data);
-    Swal.fire('Invitado creado correctamente', '', 'success');
+    const user = `${data.user.name} ${data.user.lastName}`;
+    localStorage.setItem('tokenCustomer', data.token);
+    localStorage.setItem('user', user);
+    dispatch(onLoginCustomer(user));
 
   }
 

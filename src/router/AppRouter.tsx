@@ -15,6 +15,8 @@ import { SpeakerView } from '@/views/admin/speaker';
 import { AuthCustomer } from '@/views/home/auth/customer/Auth';
 import { LoginAdmin } from '@/views/home/auth/admin/Login';
 import { Profile } from '@/views/customer/Profile';
+import { Navbar } from '@/views/home';
+import { Footer } from '@/views/home/footer';
 
 export const AppRouter = () => {
 
@@ -25,27 +27,35 @@ export const AppRouter = () => {
 
   return (
     (status === 'not-authenticated') ?
-      <Routes>
-        <Route path='/' element={<Home />} />
-        <Route path='/auth' element={<AuthCustomer />} />
-        <Route path='/admin' element={<LoginAdmin />} />
-        <Route path='/profile' element={<Profile/>}/>
-        <Route path="/*" element={<Navigate to={'/'} />} />
-      </Routes>
-      :
-      <Layout>
+      <>
+        <Navbar />
         <Routes>
-          <Route path='/dashboardView' element={<DashboardView />} />
-          <Route path='/permissionsView' element={<PermissionView />} />
-          <Route path='/rolesView' element={<RoleView />} />
-          <Route path='/staffView' element={<StaffView />} />
-          <Route path='/guestView' element={<GuestView />} />
-          <Route path='/speakerView' element={<SpeakerView />} />
-          <Route path='/calendarView' element={<CalendarView />} />
-          <Route path='/reportView' element={<ReportView />} />
-          {/*  */}
-          <Route path="/*" element={<Navigate to={'/dashboardView'} />} />
+          <Route path='/' element={<Home />} />
+          <Route path='/auth' element={<AuthCustomer />} />
+          <Route path='/admin' element={<LoginAdmin />} />
+          <Route path="/*" element={<Navigate to={'/'} />} />
         </Routes>
-      </Layout>
+        <Footer />
+      </>
+      :
+      (status === 'authenticatedCustomer') ?
+        <Routes>
+          <Route path='/profile' element={<Profile />} />
+          <Route path="/*" element={<Navigate to={'/profile'} />} />
+        </Routes> :
+        <Layout>
+          <Routes>
+            <Route path='/dashboardView' element={<DashboardView />} />
+            <Route path='/permissionsView' element={<PermissionView />} />
+            <Route path='/rolesView' element={<RoleView />} />
+            <Route path='/staffView' element={<StaffView />} />
+            <Route path='/guestView' element={<GuestView />} />
+            <Route path='/speakerView' element={<SpeakerView />} />
+            <Route path='/calendarView' element={<CalendarView />} />
+            <Route path='/reportView' element={<ReportView />} />
+            {/*  */}
+            <Route path="/*" element={<Navigate to={'/dashboardView'} />} />
+          </Routes>
+        </Layout>
   )
 }

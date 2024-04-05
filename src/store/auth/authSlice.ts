@@ -13,6 +13,10 @@ export const authSlice = createSlice({
       state.status = 'authenticated';
       state.user = payload;
     },
+    onLoginCustomer: (state, { payload }) => {
+      state.status = 'authenticatedCustomer';
+      state.user = payload;
+    },
     onLogout: (state) => {
       state.status = 'not-authenticated';
       state.user = {};
@@ -25,4 +29,4 @@ export const authSlice = createSlice({
 
 
 // Action creators are generated for each case reducer function
-export const { onLogin, onLogout, setRoleUser } = authSlice.actions;
+export const { onLogin, onLoginCustomer, onLogout, setRoleUser } = authSlice.actions;

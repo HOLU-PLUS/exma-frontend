@@ -1,14 +1,11 @@
-import { GetInTouch, GetStarted, Header, Navbar } from '.'
-import { Footer } from './footer'
+import { GetInTouch, GetStarted, Header } from '.'
 
 export const Home = () => {
   return (
     <>
-      <Navbar />
       <Header />
       <GetStarted />
       <GetInTouch />
-      <Footer />
     </>
   )
 }
