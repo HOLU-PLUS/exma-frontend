@@ -12,8 +12,10 @@ export const useGuestStore = () => {
     const { data } = await coffeApi.post('/auth/guest/', body);
     console.log(data);
     const user = `${data.user.name} ${data.user.lastName}`;
+    const qr = data.user.guests.codeQr;
     localStorage.setItem('tokenCustomer', data.token);
     localStorage.setItem('user', user);
+    localStorage.setItem('qr', qr);
     dispatch(onLoginCustomer(user));
 
   }

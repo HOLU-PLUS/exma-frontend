@@ -8,3 +8,4 @@ export * from './event';
 export * from './stageType';
 export * from './theth';
 export * from './payment';
+export * from './activity';

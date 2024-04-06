@@ -18,10 +18,23 @@ export const useEventStore = () => {
     try {
       console.log('CREANDO UN EVENTO')
       console.log(body)
-      const { data } = await coffeApi.post(`/event`, body);
+      const { data } = await coffeApi.post(`/event/`, body);
       console.log(data)
-      dispatch(setAddEvent({ treatment: data.treatment }));
+      dispatch(setAddEvent({ event: data }));
       Swal.fire('Evento creado correctamente', '', 'success');
+    } catch (error: any) {
+      Swal.fire('Oops ocurrio algo', error.response.data.msg, 'error');
+    }
+  }
+
+  const registerAttendanceEvent = async (body: object) => {
+    try {
+      console.log('CREANDO UNA ASISTENCIA')
+      console.log(body)
+      const { data } = await coffeApi.post(`/event/attendance/`, body);
+      console.log(data)
+      dispatch(setAddEvent({ event: data }));
+      Swal.fire('Invitado registrado correctamente', '', 'success');
     } catch (error: any) {
       Swal.fire('Oops ocurrio algo', error.response.data.msg, 'error');
     }
@@ -78,6 +91,7 @@ export const useEventStore = () => {
     //* Métodos
     getEvents,
     createEvent,
+    registerAttendanceEvent,
     updateEvent,
     deleteEvent,
   }

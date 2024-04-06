@@ -1,34 +1,28 @@
-import { GuestModel, PaymentModel, StageTypeModel, ThethModel } from ".";
+import { ActivityModel } from ".";
 
 export interface EventModel {
   id: number;
-  description: string;
-  date: Date;
-  totalAmount: number;
-  state: string;
-  stageType: StageTypeModel;
-  patient: GuestModel;
-  payments: PaymentModel[];
-  thethIds: ThethModel[];
-  amountDue: number;
+  name: string;
+  price:number;
+  start: Date;
+  end: Date;
+  activities: ActivityModel[];
 }
 
 /* FORM */
-export interface FormTreatmenttModel {
-  stageTypeId: StageTypeModel | null;
-  patientId: GuestModel | null;
-  description: string;
-  date: Date | null;
-  totalAmount: number;
-  thethIds: ThethModel[];
+export interface FormEventModel {
+  name: string;
+  price: number;
+  start: Date | null;
+  end: Date | null;
+  activities: ActivityModel[];
 }
 
 /*VALIDATIONS */
-export interface FormTreatmentValidations {
-  stageTypeId: [(value: StageTypeModel[]) => boolean, string];
-  patientId: [(value: GuestModel[]) => boolean, string];
-  description: [(value: string) => boolean, string];
-  date: [(value: Date) => boolean, string];
-  totalAmount: [(value: number) => boolean, string];
-  thethIds: [(value: ThethModel[]) => boolean, string];
+export interface FormEventValidations {
+  name: [(value: string) => boolean, string];
+  price: [(value: number) => boolean, string];
+  start: [(value: Date) => boolean, string];
+  end: [(value: Date) => boolean, string];
+  activities: [(value: ActivityModel[]) => boolean, string];
 }

@@ -7,7 +7,7 @@ import './styles.css';
 import { Paper } from "@mui/material";
 import { useCallback, useEffect, useState } from "react";
 import { EventModel } from "@/models";
-import { CalendarEvent, TreatmentDialog } from ".";
+import { CalendarEvent, EventDialog } from ".";
 
 
 interface calendarProps {
@@ -25,8 +25,8 @@ export const CalendarComponent = (props: calendarProps) => {
   useEffect(() => {
     getEvents();
   }, [])
-  const onSelect = (treatment: EventModel) => {
-    setitemSelect(treatment)
+  const onSelect = (event: EventModel) => {
+    setitemSelect(event)
     handleDialog(true);
   }
   const handleDialog = useCallback((value: boolean) => {
@@ -39,12 +39,10 @@ export const CalendarComponent = (props: calendarProps) => {
         <Calendar
           culture='es'
           localizer={localizer}
-          events={[...events.map(((treatment: EventModel) =>
+          events={[...events.map(((event: EventModel) =>
           ({
-            title: treatment.description,
-            start: new Date(`${treatment.date}`),
-            end: new Date((new Date(`${treatment.date}`)).getTime() + 30 * 60 * 1000),
-            ...treatment
+            title: event.name,
+            ...event
           })))
           ]}
           style={{ height: `${screenHeight - 150}px`, cursor: 'pointer' }}
@@ -68,10 +66,10 @@ export const CalendarComponent = (props: calendarProps) => {
       </Paper>
       {
         itemSelect &&
-        <TreatmentDialog
+        <EventDialog
           open={openDialog}
           handleClose={() => handleDialog(false)}
-          treatmentId={itemSelect.id}
+          event={itemSelect}
         />
       }
     </>
