@@ -27,5 +27,4 @@ export interface FormEventValidations {
   price: [(value: number) => boolean, string];
   start: [(value: Date) => boolean, string];
   end: [(value: Date) => boolean, string];
-  activities: [(value: ActivityModel[]) => boolean, string];
 }

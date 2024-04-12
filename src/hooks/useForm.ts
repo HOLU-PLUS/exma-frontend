@@ -1,18 +1,16 @@
 import { useEffect, useMemo, useState } from 'react';
 
 export const useForm = (initialForm: any = {}, formValidations: any = {}) => {
-
   const [formState, setFormState] = useState({ ...initialForm });
   const [formValidation, setFormValidation] = useState<string | any>({});
 
   useEffect(() => {
     createValidators();
-  }, [formState])
+  }, [formState]);
 
   useEffect(() => {
     setFormState({ ...initialForm });
-  }, [initialForm])
-
+  }, [initialForm]);
 
   const isFormValid = useMemo(() => {
     for (const formValue of Object.keys(formValidation)) {
@@ -20,64 +18,63 @@ export const useForm = (initialForm: any = {}, formValidations: any = {}) => {
     }
 
     return true;
-  }, [formValidation])
-
-
+  }, [formValidation]);
 
   const onInputChange = ({ target }: { target: any }, uppercase = false, onlynumber = false) => {
     const { name, value } = target;
+    console.log(name);
+    console.log(value);
 
     if (onlynumber) {
       // Si solo se permiten números, elimina cualquier carácter no numérico del valor
       const numericValue = value.replace(/[^0-9.]/g, '');
       setFormState({
         ...formState,
-        [name]: numericValue
+        [name]: numericValue,
       });
     } else {
       // Si no se restringen los caracteres, simplemente convierte a mayúsculas si es necesario
       setFormState({
         ...formState,
-        [name]: uppercase ? value.toUpperCase() : value
+        [name]: uppercase ? value.toUpperCase() : value,
       });
     }
-  }
-
+  };
 
   const isSelectChange = (name: string, text: string) => {
     setFormState({
       ...formState,
-      [name]: text
-    })
-  }
+      [name]: text,
+    });
+  };
   const onFileChange = (name: string, file: File) => {
     setFormState({
       ...formState,
-      [name]: file
-    })
-  }
+      [name]: file,
+    });
+  };
 
   const onSwitchChange = (name: string, state: boolean) => {
     setFormState({
       ...formState,
-      [name]: state
-    })
-  }
+      [name]: state,
+    });
+  };
 
   const onArrayChange = (name: string, state: Array<any>) => {
     setFormState({
       ...formState,
-      [name]: state
-    })
-  }
+      [name]: state,
+    });
+  };
 
   const onValueChange = (name: string, state: any) => {
     setFormState({
       ...formState,
-      [name]: state
-    })
-  }
-  const onListValuesChange = (names: string[], states: any[],) => {
+      [name]: state,
+    });
+  };
+  const onListValuesChange = (names: string[], states: any[]) => {
     // Copia el estado actual en un nuevo objeto
     const updatedFormState = { ...formState };
 
@@ -88,13 +85,11 @@ export const useForm = (initialForm: any = {}, formValidations: any = {}) => {
 
     // Establece el nuevo objeto actualizado como el estado
     setFormState(updatedFormState);
-  }
-
-
+  };
 
   const onResetForm = () => {
     setFormState(initialForm);
-  }
+  };
 
   const createValidators = () => {
     const formCheckedValues: any = {};
@@ -104,9 +99,7 @@ export const useForm = (initialForm: any = {}, formValidations: any = {}) => {
     }
 
     setFormValidation(formCheckedValues);
-  }
-
-
+  };
 
   return {
     ...formState,
@@ -122,6 +115,6 @@ export const useForm = (initialForm: any = {}, formValidations: any = {}) => {
     onResetForm,
 
     ...formValidation,
-    isFormValid
-  }
-}
+    isFormValid,
+  };
+};

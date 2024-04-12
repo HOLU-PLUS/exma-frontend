@@ -5,7 +5,7 @@ import { format } from "date-fns";
 import { DeleteOutline, EditOutlined } from "@mui/icons-material";
 import { useEventStore } from "@/hooks";
 import { useCallback, useState } from "react";
-import { EventCreate } from ".";
+import { EventCreateSteps } from ".";
 
 interface tableProps {
   patient: GuestModel;

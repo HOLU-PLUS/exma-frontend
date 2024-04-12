@@ -4,7 +4,7 @@ import { useCallback, useEffect, useState } from "react";
 import { CalendarComponent } from ".";
 import { Add } from "@mui/icons-material";
 import { GuestModel } from "@/models";
-import { EventCreate } from "../event";
+import { EventCreateSteps } from "../event";
 
 export const CalendarView = () => {
   const [openDialog, setopenDialog] = useState(false);
@@ -43,7 +43,7 @@ export const CalendarView = () => {
       />
       {
         openDialog &&
-        <EventCreate
+        <EventCreateSteps
           open={openDialog}
           handleClose={() => handleDialog(false)}
           item={itemEdit == null ? null : { ...itemEdit!.user, patientId: itemEdit.id, ...itemEdit }}
