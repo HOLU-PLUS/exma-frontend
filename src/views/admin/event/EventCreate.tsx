@@ -11,6 +11,7 @@ interface createProps {
 
 const formFields: FormEventModel = {
   name: '',
+  description: '',
   price: 0,
   start: null,
   end: null,
@@ -19,6 +20,7 @@ const formFields: FormEventModel = {
 
 const formValidations: FormEventValidations = {
   name: [(value: string) => value.length >= 1, 'Debe ingresar el nombre'],
+  description: [(value: string) => value.length >= 1, 'Debe ingresar la descripción'],
   price: [(value: number) => value!= null , 'Debe ingresar el nombre'],
   start: [(value: Date) => value != null, 'Debe ingresar la fecha inicio'],
   end: [(value: Date) => value != null, 'Debe ingresar la fecha fin'],
@@ -35,9 +37,9 @@ export const EventCreate = (props: createProps) => {
 
   const [formSubmitted, setFormSubmitted] = useState(false);
   const {
-    name, price, start, end,
+    name, description, price, start, end,
     onInputChange, isFormValid, onResetForm, onValueChange,
-    nameValid, priceValid,startValid,endValid
+    nameValid, descriptionValid, priceValid,startValid,endValid
   } = useForm(item ?? formFields, formValidations);
 
   const sendSubmit = (event: FormEvent<HTMLFormElement>) => {
@@ -49,6 +51,7 @@ export const EventCreate = (props: createProps) => {
       createEvent(
         {
           name: name.trim(),
+          description: description.trim(),
           price: parseInt(price),
           start,
           end,
@@ -58,6 +61,7 @@ export const EventCreate = (props: createProps) => {
       updateEvent(item.treatmentId,
         {
           name: name.trim(),
+          description: description.trim(),
           price,
           start,
           end,
@@ -75,7 +79,7 @@ export const EventCreate = (props: createProps) => {
         <form onSubmit={sendSubmit}>
           <DialogContent sx={{ display: 'flex' }}>
             <Grid container>
-              <Grid item xs={12} sm={4} sx={{ padding: '5px' }}>
+              <Grid item xs={12} sm={6} sx={{ padding: '5px' }}>
                 <ComponentInput
                   type="text"
                   label="Nombre"
@@ -84,6 +88,17 @@ export const EventCreate = (props: createProps) => {
                   onChange={onInputChange}
                   error={!!nameValid && formSubmitted}
                   helperText={formSubmitted ? nameValid : ''}
+                />
+              </Grid>
+              <Grid item xs={12} sm={6} sx={{ padding: '5px' }}>
+                <ComponentInput
+                  type="text"
+                  label="Descripción"
+                  name="description"
+                  value={description}
+                  onChange={onInputChange}
+                  error={!!descriptionValid && formSubmitted}
+                  helperText={formSubmitted ? descriptionValid : ''}
                 />
               </Grid>
               <Grid item xs={12} sm={4} sx={{ padding: '5px' }}>

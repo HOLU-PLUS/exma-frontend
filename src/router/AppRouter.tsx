@@ -19,43 +19,48 @@ import { Navbar } from '@/views/home';
 import { Footer } from '@/views/home/footer';
 
 export const AppRouter = () => {
-
   const { status, checkAuthToken } = useAuthStore();
+
   useEffect(() => {
     checkAuthToken();
   }, []);
 
-  return (
-    (status === 'not-authenticated') ?
-      <>
-        <Navbar />
+  switch (status) {
+    case 'not-authenticated':
+      return (
+        <>
+          <Navbar />
+          <Routes>
+            <Route path="/" element={<Home />} />
+            <Route path="/auth" element={<AuthCustomer />} />
+            <Route path="/admin" element={<LoginAdmin />} />
+            <Route path="/*" element={<Navigate to={'/'} />} />
+          </Routes>
+          <Footer />
+        </>
+      );
+    case 'authenticatedCustomer':
+      return (
         <Routes>
-          <Route path='/' element={<Home />} />
-          <Route path='/auth' element={<AuthCustomer />} />
-          <Route path='/admin' element={<LoginAdmin />} />
-          <Route path="/*" element={<Navigate to={'/'} />} />
-        </Routes>
-        <Footer />
-      </>
-      :
-      (status === 'authenticatedCustomer') ?
-        <Routes>
-          <Route path='/profile' element={<Profile />} />
+          <Route path="/profile" element={<Profile />} />
           <Route path="/*" element={<Navigate to={'/profile'} />} />
-        </Routes> :
+        </Routes>
+      );
+    default:
+      return (
         <Layout>
           <Routes>
-            <Route path='/dashboardView' element={<DashboardView />} />
-            <Route path='/permissionsView' element={<PermissionView />} />
-            <Route path='/rolesView' element={<RoleView />} />
-            <Route path='/staffView' element={<StaffView />} />
-            <Route path='/guestView' element={<GuestView />} />
-            <Route path='/speakerView' element={<SpeakerView />} />
-            <Route path='/calendarView' element={<CalendarView />} />
-            <Route path='/reportView' element={<ReportView />} />
-            {/*  */}
+            <Route path="/dashboardView" element={<DashboardView />} />
+            <Route path="/permissionsView" element={<PermissionView />} />
+            <Route path="/rolesView" element={<RoleView />} />
+            <Route path="/staffView" element={<StaffView />} />
+            <Route path="/guestView" element={<GuestView />} />
+            <Route path="/speakerView" element={<SpeakerView />} />
+            <Route path="/calendarView" element={<CalendarView />} />
+            <Route path="/reportView" element={<ReportView />} />
             <Route path="/*" element={<Navigate to={'/dashboardView'} />} />
           </Routes>
         </Layout>
-  )
-}
+      );
+  }
+};

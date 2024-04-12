@@ -1,6 +1,8 @@
 
 export * from './useForm';
 export * from './usePopover';
+export * from './useError';
+export * from './useAlert';
 
 export * from './useAuthStore';
 export * from './usePermissionStore';
@@ -9,7 +11,4 @@ export * from './useStaffStore';
 export * from './useGuestStore';
 export * from './useSpeakerStore';
 export * from './useEventStore';
-export * from './useStageTypeStore';
-export * from './useThethStore';
-export * from './usePaymentStore';
 export * from './useReportStore';

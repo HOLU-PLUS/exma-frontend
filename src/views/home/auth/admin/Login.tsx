@@ -5,8 +5,8 @@ import { useAuthStore, useForm } from '@/hooks';
 import { ComponentButton, ComponentInput } from '@/components';
 
 const loginFormFields = {
-  email: '',
-  password: '',
+  email: 'moisic.mo@gmail.com',
+  password: '8312915',
 }
 const formValidations = {
   email: [(value: any) => value.length >= 1, 'Debe ingresar su cuenta'],
@@ -34,7 +34,7 @@ export const LoginAdmin = () => {
   };
 
   return (
-    <Grid container justifyContent="center" alignItems="center" style={{ height: '100vh' }}>
+    <Grid container justifyContent="center" alignItems="center" style={{ minHeight: '60vh', }}>
       <Grid item xs={12} sm={6} container justifyContent="center" alignItems="center">
         {/* <img src={imagelogo} alt="Descripción de la imagen" style={{ maxHeight: '80%', maxWidth: '80%' }} /> */}
       </Grid>
