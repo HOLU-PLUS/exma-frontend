@@ -1,5 +1,5 @@
 import { ComponentButton } from "@/components"
-import { Stack, SvgIcon } from "@mui/material"
+import { Stack, SvgIcon, Typography } from "@mui/material"
 import { useCallback, useEffect, useState } from "react";
 import { CalendarComponent } from ".";
 import { Add } from "@mui/icons-material";
@@ -28,16 +28,15 @@ export const CalendarView = () => {
 
   return (
     <>
-      <Stack
-        direction="row"
-        justifyContent="end"
-      >
+      <Stack direction="row" justifyContent="space-between">
+        <Typography variant="h6">Eventos</Typography>
         <ComponentButton
-          text="Nuevo Evento"
+          text="Nuevo evento"
           onClick={() => handleDialog(true)}
           startIcon={<SvgIcon fontSize="small"><Add /></SvgIcon>}
         />
       </Stack>
+      <div style={{ height: 10 }} />
       <CalendarComponent
         screenHeight={screenHeight}
       />
@@ -46,7 +45,7 @@ export const CalendarView = () => {
         <EventCreateSteps
           open={openDialog}
           handleClose={() => handleDialog(false)}
-          item={itemEdit == null ? null : { ...itemEdit!.user, patientId: itemEdit.id, ...itemEdit }}
+          item={itemEdit}
         />
       }
     </>

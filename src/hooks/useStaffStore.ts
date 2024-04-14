@@ -13,7 +13,7 @@ export const useStaffStore = () => {
     try {
       const { data } = await coffeApi.get('/staff');
       console.log(data);
-      dispatch(setStaffs({ staffs: data.administrators }));
+      dispatch(setStaffs({ staffs: data.staffs }));
     } catch (error) {
       throw handleError(error);
     }
@@ -23,7 +23,7 @@ export const useStaffStore = () => {
     try {
       const { data } = await coffeApi.post(`/staff`, body);
       console.log(data);
-      dispatch(setAddStaff({ staff: data.administrator }));
+      dispatch(setAddStaff({ staff: data }));
       showSuccess('Staff creado correctamente');
     } catch (error) {
       throw handleError(error);
@@ -34,7 +34,7 @@ export const useStaffStore = () => {
     try {
       const { data } = await coffeApi.put(`/staff/${id}`, body);
       console.log(data);
-      dispatch(setUpdateStaff({ staff: data.administrator }));
+      dispatch(setUpdateStaff({ staff: data }));
       showSuccess('Staff modificado correctamente');
     } catch (error) {
       throw handleError(error);

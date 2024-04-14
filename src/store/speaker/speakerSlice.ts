@@ -4,17 +4,17 @@ import { createSlice } from '@reduxjs/toolkit';
 export const speakerSlice = createSlice({
   name: 'speaker',
   initialState: {
-    speaker: [] as SpeakerModel[],
+    speakers: [] as SpeakerModel[],
   },
   reducers: {
     setSpeakers: (state, action) => {
-      state.speaker = action.payload.speakers;
+      state.speakers = action.payload.speakers;
     },
     setAddSpeaker: (state, action) => {
-      state.speaker = [...state.speaker, action.payload.speaker];
+      state.speakers = [...state.speakers, action.payload.speaker];
     },
     setUpdateSpeaker: (state, action) => {
-      state.speaker = [...state.speaker.map((e) => {
+      state.speakers = [...state.speakers.map((e) => {
         if (e.id === action.payload.speaker.id) {
           return {
             ...action.payload.speaker
@@ -24,7 +24,7 @@ export const speakerSlice = createSlice({
       })];
     },
     setDeleteSpeaker: (state, action) => {
-      state.speaker = [...state.speaker.filter(e => e.id != action.payload.id)];
+      state.speakers = [...state.speakers.filter(e => e.id != action.payload.id)];
     },
   }
 });

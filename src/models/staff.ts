@@ -1,30 +1,17 @@
-import { RoleModel, UserModel } from ".";
+import { FormUserModel, FormUserValidations, RoleModel, UserModel } from ".";
 
 
-export interface StaffModel {
+export interface StaffModel extends UserModel{
   id: number;
   role: RoleModel;
-  user: UserModel;
 }
 
 /* FORM */
-export interface FormAdministratorModel {
-  identityCard: number;
-  name: string;
-  lastName: string;
-  phone: number;
-  birthDate: Date | null;
-  gender: string;
-  roleId: RoleModel | null;
+export interface FormAdministratorModel extends FormUserModel {
+  role: RoleModel | null;
 }
 
 /*VALIDATIONS */
-export interface FormAdministratorValidations {
-  identityCard: [(value: number) => boolean, string];
-  name: [(value: string) => boolean, string];
-  lastName: [(value: string) => boolean, string];
-  phone: [(value: number) => boolean, string];
-  birthDate: [(value: Date) => boolean, string];
-  gender: [(value: string) => boolean, string];
-  roleId: [(value: RoleModel) => boolean, string];
+export interface FormAdministratorValidations extends FormUserValidations {
+  role: [(value: RoleModel) => boolean, string];
 }

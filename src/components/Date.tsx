@@ -4,41 +4,33 @@ import { DatePicker } from '@mui/x-date-pickers';
 import dayjs from 'dayjs';
 import 'dayjs/locale/es';
 import { Typography } from '@mui/material';
+import { useTheme } from '@mui/material/styles'; // Importa el hook useTheme
 
-interface dateProps {
+interface Props {
   date: Date;
   title: string;
   onChange: (value: Date) => void;
   error?: boolean;
   helperText?: string;
+  minDate?: Date;
+  maxDate?: Date;
 }
 
-export const ComponentDate = (props: dateProps) => {
-  const {
-    date,
-    title,
-    onChange,
-    error = false,
-    helperText,
-  } = props;
+export const ComponentDate = (props: Props) => {
+  const { date, title, onChange, error = false, helperText, minDate, maxDate } = props;
+  const theme = useTheme();
+
   return (
     <>
       <LocalizationProvider adapterLocale="es" dateAdapter={AdapterDayjs}>
         <DatePicker
           value={dayjs(date)}
           label={title}
+          minDate={minDate ? dayjs(minDate) : null}
+          maxDate={maxDate ? dayjs(maxDate) : null}
           onChange={(v) => onChange(v!.toDate())}
-          slotProps={{
-            popper: {
-              sx: {
-                zIndex: 9999
-              }
-            },
-          }}
           sx={{
             display: 'flex',
-            padding: '0px',
-            margin: '0px',
             '& label.Mui-focused': {
               color: 'black',
             },
@@ -47,16 +39,20 @@ export const ComponentDate = (props: dateProps) => {
             },
             '& .MuiOutlinedInput-root': {
               borderRadius: '10px',
-              height: 'fit-content',
-              '& fieldset': { borderColor: '#2F3746' },
-              '&:hover fieldset': { borderColor: '#0B815A' },
+              height: '50px',
+              '& fieldset': { borderColor: theme.palette.primary.main },
+              '&:hover fieldset': { borderColor: theme.palette.primary.main },
+              '&.Mui-focused fieldset': { borderColor: theme.palette.primary.main },
+              '&.Mui-error fieldset': { borderColor: error ? 'red' : theme.palette.primary.main },
             },
           }}
         />
       </LocalizationProvider>
       {error && (
-        <Typography style={{ color: 'red', fontSize: '0.8rem', padding: '2px' }} >{helperText}</Typography>
+        <Typography style={{ color: 'red', fontSize: '0.75rem', padding: '2px' }}>
+          {helperText}
+        </Typography>
       )}
     </>
-  )
-}
+  );
+};

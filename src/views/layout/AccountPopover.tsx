@@ -1,12 +1,12 @@
 
 import { Box, Divider, MenuItem, MenuList, Popover, Typography } from '@mui/material';
 import { useNavigate } from 'react-router-dom';
-import { useAuthStore } from '@/hooks';
+import { useAuthStore, useLogoutStore } from '@/hooks';
 
 export const AccountPopover = ({ anchorEl, onClose, open }: { anchorEl: any, onClose: any, open: boolean }) => {
 
   const navigate = useNavigate();
-  const { startLogout } = useAuthStore();
+  const { startLogout } = useLogoutStore();
   const { user, roleUser } = useAuthStore();
 
   return (

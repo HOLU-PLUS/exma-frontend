@@ -25,13 +25,13 @@ export const menu = () => {
       permission: "show-rent",
       group: [
         {
-          path: "/guestView",
+          path: "/speakerView",
           title: "Ponentes",
           icon: <Group />,
           permission: "show-halls"
         },
         {
-          path: "/speakerView",
+          path: "/guestView",
           title: "Invitados",
           icon: <Group />,
           permission: "show-halls"

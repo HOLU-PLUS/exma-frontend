@@ -1,21 +1,14 @@
-import { UserModel } from ".";
+import { FormUserModel, FormUserValidations, UserModel } from ".";
 
-export interface GuestModel {
+export interface GuestModel extends UserModel{
   id: number;
   codeQr: string;
-  user: UserModel;
 }
 
 /* FORM */
-export interface FormGuestModel {
-  name: string;
-  lastName: string;
-  email: string;
+export interface FormGuestModel extends FormUserModel{
 }
 
 /*VALIDATIONS */
-export interface FormGuestValidations {
-  name: [(value: string) => boolean, string];
-  lastName: [(value: string) => boolean, string];
-  email: [(value: string) => boolean, string];
+export interface FormGuestValidations extends FormUserValidations {
 }

@@ -1,8 +1,8 @@
-import { ComponentDate, ComponentInput } from "@/components"
-import { useForm,  useSpeakerStore } from "@/hooks";
-import { FormGuestModel, FormGuestValidations } from "@/models";
-import { Button, Dialog, DialogActions, DialogContent, DialogTitle, Grid } from "@mui/material"
-import { FormEvent, useState } from "react";
+import { ComponentInput } from '@/components';
+import { useForm, useSpeakerStore } from '@/hooks';
+import { FormSpeakerModel, FormSpeakerValidations } from '@/models';
+import { Button, Dialog, DialogActions, DialogContent, DialogTitle, Grid } from '@mui/material';
+import { FormEvent, useState } from 'react';
 
 interface createProps {
   open: boolean;
@@ -10,41 +10,37 @@ interface createProps {
   item: any;
 }
 
-const formFields: FormGuestModel = {
-  identityCard: 0,
+const formFields: FormSpeakerModel = {
+  ci: '',
   name: '',
   lastName: '',
-  phone: 0,
-  birthDate: null,
-  gender: '',
-  allergies: '',
-  bloodType: '',
-}
+  email: '',
+};
 
-const formValidations: FormGuestValidations = {
-  identityCard: [(value: number) => value != 0, 'Debe ingresar el numero de carnet'],
+const formValidations: FormSpeakerValidations = {
+  ci: [(value: string) => value.length >= 1, 'Debe ingresar el carnet'],
   name: [(value: string) => value.length >= 1, 'Debe ingresar el nombre'],
   lastName: [(value: string) => value.length >= 1, 'Debe ingresar el apellido'],
-  phone: [(value: number) => value != 0, 'Debe ingresar el numero de telefono'],
-  birthDate: [(value: Date) => value != null, 'Debe ingresar la fecha de nacimiento'],
-  gender: [(value: string) => value.length >= 1, 'Debe ingresar el genero'],
-  allergies: [(value: string) => value.length >= 1, 'Debe ingresar la alergia'],
-  bloodType: [(value: string) => value.length >= 1, 'Debe ingresar tipo de sangre'],
-}
+  email: [(value: string) => value.length >= 1, 'Debe ingresar el correo'],
+};
 
 export const SpeakerCreate = (props: createProps) => {
-  const {
-    open,
-    handleClose,
-    item,
-  } = props;
+  const { open, handleClose, item } = props;
   const { createSpeaker, updateSpeaker } = useSpeakerStore();
 
   const [formSubmitted, setFormSubmitted] = useState(false);
   const {
-    identityCard, name, lastName, phone, birthDate, gender, allergies, bloodType,
-    onInputChange, isFormValid, onResetForm, onValueChange,
-    identityCardValid, nameValid, lastNameValid, phoneValid, birthDateValid, genderValid, allergiesValid, bloodTypeValid,
+    ci,
+    name,
+    lastName,
+    email,
+    onInputChange,
+    isFormValid,
+    onResetForm,
+    ciValid,
+    nameValid,
+    lastNameValid,
+    emailValid,
   } = useForm(item ?? formFields, formValidations);
 
   const sendSubmit = (event: FormEvent<HTMLFormElement>) => {
@@ -52,53 +48,32 @@ export const SpeakerCreate = (props: createProps) => {
     setFormSubmitted(true);
     if (!isFormValid) return;
     if (item == null) {
-      createSpeaker(
-        {
-          identityCard: parseInt(identityCard),
-          name: name.trim(),
-          lastName: lastName.trim(),
-          phone: parseInt(phone),
-          birthDate: birthDate,
-          gender: gender,
-          allergies: allergies,
-          bloodType: bloodType,
-        });
+      createSpeaker({
+        ci: ci.trim(),
+        name: name.trim(),
+        lastName: lastName.trim(),
+        email: email.trim(),
+      });
     } else {
-      updateSpeaker(item.patientId,
-        {
-          identityCard: identityCard,
-          name: name.trim(),
-          lastName: lastName.trim(),
-          phone: phone,
-          birthDate: birthDate,
-          gender: gender,
-          allergies: allergies,
-          bloodType: bloodType,
-        });
+      updateSpeaker(item.patientId, {
+        ci: ci.trim(),
+        name: name.trim(),
+        lastName: lastName.trim(),
+        email: email.trim(),
+      });
     }
     handleClose();
     onResetForm();
-  }
+  };
 
   return (
     <>
-      <Dialog open={open} onClose={handleClose} >
-        <DialogTitle>{item == null ? 'Nuevo Paciente' : `${item.name}`}</DialogTitle>
+      <Dialog open={open} onClose={handleClose}>
+        <DialogTitle>{item == null ? 'Nuevo Ponente' : `${item.name}`}</DialogTitle>
         <form onSubmit={sendSubmit}>
           <DialogContent sx={{ display: 'flex' }}>
             <Grid container>
-              <Grid item xs={12} sm={4} sx={{ padding: '5px' }}>
-                <ComponentInput
-                  type="text"
-                  label="Carnet de Identidad"
-                  name="identityCard"
-                  value={identityCard}
-                  onChange={onInputChange}
-                  error={!!identityCardValid && formSubmitted}
-                  helperText={formSubmitted ? identityCardValid : ''}
-                />
-              </Grid>
-              <Grid item xs={12} sm={4} sx={{ padding: '5px' }}>
+              <Grid item xs={12} sm={6} sx={{ padding: '5px' }}>
                 <ComponentInput
                   type="text"
                   label="Nombre"
@@ -109,7 +84,7 @@ export const SpeakerCreate = (props: createProps) => {
                   helperText={formSubmitted ? nameValid : ''}
                 />
               </Grid>
-              <Grid item xs={12} sm={4} sx={{ padding: '5px' }}>
+              <Grid item xs={12} sm={6} sx={{ padding: '5px' }}>
                 <ComponentInput
                   type="text"
                   label="Apellido"
@@ -120,72 +95,43 @@ export const SpeakerCreate = (props: createProps) => {
                   helperText={formSubmitted ? lastNameValid : ''}
                 />
               </Grid>
-              <Grid item xs={12} sm={4} sx={{ padding: '5px' }}>
+              <Grid item xs={12} sm={6} sx={{ padding: '5px' }}>
                 <ComponentInput
                   type="text"
-                  label="Genero"
-                  name="gender"
-                  value={gender}
+                  label="Carnet de Identidad"
+                  name="ci"
+                  value={ci}
                   onChange={onInputChange}
-                  error={!!genderValid && formSubmitted}
-                  helperText={formSubmitted ? genderValid : ''}
+                  error={!!ciValid && formSubmitted}
+                  helperText={formSubmitted ? ciValid : ''}
                 />
               </Grid>
-              <Grid item xs={12} sm={4} sx={{ padding: '5px' }}>
+              <Grid item xs={12} sm={6} sx={{ padding: '5px' }}>
                 <ComponentInput
                   type="text"
-                  label="Telefono"
-                  name="phone"
-                  value={phone}
+                  label="Correo"
+                  name="email"
+                  value={email}
                   onChange={onInputChange}
-                  error={!!phoneValid && formSubmitted}
-                  helperText={formSubmitted ? phoneValid : ''}
-                />
-              </Grid>
-              <Grid item xs={12} sm={4} sx={{ padding: '5px' }}>
-                <ComponentDate
-                  title="Fecha de nacimiento"
-                  date={birthDate}
-                  onChange={(date) => onValueChange('birthDate', date)}
-                  error={!!birthDateValid && formSubmitted}
-                  helperText={formSubmitted ? birthDateValid : ''}
-                />
-              </Grid>
-              <Grid item xs={12} sm={4} sx={{ padding: '5px' }}>
-                <ComponentInput
-                  type="text"
-                  label="Alergias"
-                  name="allergies"
-                  value={allergies}
-                  onChange={onInputChange}
-                  error={!!allergiesValid && formSubmitted}
-                  helperText={formSubmitted ? allergiesValid : ''}
-                />
-              </Grid>
-              <Grid item xs={12} sm={4} sx={{ padding: '5px' }}>
-                <ComponentInput
-                  type="text"
-                  label="Tipo de sangre"
-                  name="bloodType"
-                  value={bloodType}
-                  onChange={onInputChange}
-                  error={!!bloodTypeValid && formSubmitted}
-                  helperText={formSubmitted ? bloodTypeValid : ''}
+                  error={!!emailValid && formSubmitted}
+                  helperText={formSubmitted ? emailValid : ''}
                 />
               </Grid>
             </Grid>
           </DialogContent>
           <DialogActions>
-            <Button onClick={() => {
-              onResetForm();
-              handleClose()
-            }}>Cancelar</Button>
-            <Button type="submit">
-              {item == null ? 'CREAR' : 'EDITAR'}
+            <Button
+              onClick={() => {
+                onResetForm();
+                handleClose();
+              }}
+            >
+              Cancelar
             </Button>
+            <Button type="submit">{item == null ? 'CREAR' : 'EDITAR'}</Button>
           </DialogActions>
         </form>
       </Dialog>
     </>
-  )
-}
+  );
+};

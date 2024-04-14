@@ -1,14 +1,16 @@
 import { useDispatch, useSelector } from 'react-redux';
 import { coffeApi } from '@/services';
-import { setEvents, setAddEvent, setUpdateEvent } from '@/store';
+import { setEvents, setAddEvent, setUpdateEvent, setEvent, setAddActivity, setRemoveActivity, setResetEvent } from '@/store';
 import { useAlertStore, useErrorStore } from '.';
+import { EventModel, FormActivityModel } from '@/models';
 
 export const useEventStore = () => {
-  const { events } = useSelector((state: any) => state.events);
+  const { event, events } = useSelector((state: any) => state.events);
   const dispatch = useDispatch();
   const { handleError } = useErrorStore();
   const { showSuccess, showWarning, showError } = useAlertStore();
 
+  //* events
   const getEvents = async () => {
     try {
       const { data } = await coffeApi.get('/event');
@@ -19,9 +21,12 @@ export const useEventStore = () => {
     }
   };
 
-  const createEvent = async (body: object) => {
+  const createEvent = async () => {
     try {
-      const { data } = await coffeApi.post(`/event/`, body);
+      const { data } = await coffeApi.post(`/event/`, {
+        ...event,
+        activities: event.activities.map(({ id, ...rest }:FormActivityModel) => rest)
+      });
       console.log(data);
       dispatch(setAddEvent({ event: data }));
       showSuccess('Evento creado correctamente');
@@ -65,14 +70,46 @@ export const useEventStore = () => {
       throw handleError(error);
     }
   };
+
+  //*event
+  const resetEvent = () => {
+    dispatch(setResetEvent({}));
+  }
+  const InsertEvent = (event: EventModel) => {
+    try {
+      dispatch(setEvent({ event }));
+    } catch (error) {
+      throw handleError(error);
+    }
+  };
+  const InsertActivity = (activity: FormActivityModel) => {
+    try {
+      dispatch(setAddActivity({ activity }));
+    } catch (error) {
+      throw handleError(error);
+    }
+  };
+  const RemoveActivity =(id:number)=> {
+    try {
+      dispatch(setRemoveActivity({id}))
+    } catch (error) {
+      throw handleError(error);
+    }
+  }
   return {
     //* Propiedades
+    event,
     events,
-    //* Métodos
+    //* Métodos eventos
     getEvents,
     createEvent,
     registerAttendanceEvent,
     updateEvent,
     deleteEvent,
+    //* Métodos evento
+    resetEvent,
+    InsertEvent,
+    InsertActivity,
+    RemoveActivity,
   };
 };

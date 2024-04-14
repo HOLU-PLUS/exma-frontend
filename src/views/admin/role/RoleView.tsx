@@ -1,5 +1,5 @@
 import { ComponentButton, ShowTable } from "@/components"
-import { Stack, SvgIcon } from "@mui/material"
+import { Stack, SvgIcon, Typography } from "@mui/material"
 import { useCallback, useState } from "react";
 import { CreateRole, RoleTable } from ".";
 import { Add } from "@mui/icons-material";
@@ -19,16 +19,15 @@ export const RoleView = () => {
   }, []);
   return (
     <>
-      <Stack
-        direction="row"
-        justifyContent="end"
-      >
+      <Stack direction="row" justifyContent="space-between">
+        <Typography variant="h6">Roles</Typography>
         <ComponentButton
           text="Nuevo rol"
           onClick={() => handleDialog(true)}
           startIcon={<SvgIcon fontSize="small"><Add /></SvgIcon>}
         />
       </Stack>
+      <div style={{ height: 10 }} />
       <RoleTable
         handleEdit={(v) => {
           setItemEdit(v)

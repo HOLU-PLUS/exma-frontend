@@ -3,68 +3,43 @@ import { styled } from '@mui/material/styles';
 import { useLocation } from 'react-router-dom';
 import { SideNav, TopNav } from '.';
 
-const SIDE_NAV_WIDTH = 65;
-
 const LayoutRoot = styled('div')(({ theme }) => ({
   display: 'flex',
   flex: '1 1 auto',
-  maxWidth: '100%',
   [theme.breakpoints.up('md')]: {
-    paddingLeft: SIDE_NAV_WIDTH
-  }
+    paddingLeft: 70,
+    paddingRight: 5
+  },
 }));
 
 const LayoutContainer = styled('div')({
   display: 'flex',
   flex: '1 1 auto',
   flexDirection: 'column',
-  width: '100%'
+  width: '100%',
 });
 interface Props {
   children: any;
 }
 export const Layout = (props: Props) => {
-
-  const {
-    children,
-  } = props
+  const { children } = props;
 
   const { pathname } = useLocation();
   const [openNav, setOpenNav] = useState(false);
-  const [settingsOpenNav, setSettingsOpenNav] = useState(false)
-  const [title, setTitle] = useState('');
-  const handlePathnameChange = useCallback(
-    () => {
+  const handlePathnameChange = useCallback(() => {
+    if (openNav) setOpenNav(false);
+  }, [openNav]);
 
-      if (settingsOpenNav) setSettingsOpenNav(false)
-      if (openNav) setOpenNav(false)
-    },
-    [openNav, settingsOpenNav]
-  );
-
-  useEffect(
-    () => {
-      handlePathnameChange();
-    },
-    [pathname]
-  );
-  console.log(children.props)
+  useEffect(() => {
+    handlePathnameChange();
+  }, [pathname]);
+  console.log(children.props);
   return (
     <>
-      <TopNav
-        onNavOpen={() => setOpenNav(true)}
-        onTapSettings={() => setSettingsOpenNav(true)}
-        title={title}
-      />
-      <SideNav
-        onClose={() => setOpenNav(false)}
-        open={openNav}
-        onPress={(title) => setTitle(title)}
-      />
+      <TopNav onNavOpen={() => setOpenNav(true)} />
+      <SideNav onClose={() => setOpenNav(false)} open={openNav} />
       <LayoutRoot>
-        <LayoutContainer>
-          {children}
-        </LayoutContainer>
+        <LayoutContainer>{children}</LayoutContainer>
       </LayoutRoot>
     </>
   );

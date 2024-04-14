@@ -30,7 +30,6 @@ const closedMixin = (theme: Theme): CSSObject => ({
   },
 });
 
-
 const Drawer = styled(MuiDrawer, { shouldForwardProp: (prop) => prop !== 'leave' })(
   ({ theme, open }) => ({
     width: drawerWidth,
@@ -46,22 +45,16 @@ const Drawer = styled(MuiDrawer, { shouldForwardProp: (prop) => prop !== 'leave'
       ...closedMixin(theme),
       '& .MuiDrawer-paper': closedMixin(theme),
     }),
-  }),
+  })
 );
 
 interface navProps {
   open: boolean;
   onClose: (state: boolean) => void;
-  onPress: (title: string) => void;
 }
 
-
 export const SideNav = (props: navProps) => {
-  const {
-    open,
-    onClose,
-    onPress
-  } = props;
+  const { open, onClose } = props;
 
   const [leave, setLeave] = useState(false);
   const { pathname } = useLocation();
@@ -80,58 +73,48 @@ export const SideNav = (props: navProps) => {
           filter: 'brightness(1.3)'
         }}
       /> */}
-      {
-        menu().map((item, index) => (
-          <React.Fragment key={index}>
-            {
-              item.path ?
-                <SideNavItem
-                  active={item.path ? (pathname === item.path) : false}
-                  leave={leave || open}
-                  icon={item.icon}
-                  path={item.path}
-                  title={item.title}
-                  onPress={(title) => {
-                    setLeave(false);
-                    onPress(title);
-                  }}
-                /> :
-                <>
-                  <Typography
-                    color="inherit"
-                    variant="subtitle1"
-                    sx={{
-                      opacity: leave || open ? 1 : 0,
-                      fontWeight: 600,
-                      pl: 1
-                    }}
-                  >
-                    {item.title}
-                  </Typography>
-                  {
-                    item.group!.map((e: any) => {
-                      const active = e.path ? (pathname === e.path) : false;
-                      return (
-                        <SideNavItem
-                          key={e.title}
-                          active={active}
-                          leave={leave || open}
-                          icon={e.icon}
-                          path={e.path}
-                          title={e.title}
-                          onPress={(title) => {
-                            setLeave(false);
-                            onPress(title);
-                          }}
-                        />
-                      )
-                    })
-                  }
-                </>
-            }
-          </React.Fragment>
-        ))
-      }
+      {menu().map((item, index) => (
+        <React.Fragment key={index}>
+          {item.path ? (
+            <SideNavItem
+              active={item.path ? pathname === item.path : false}
+              leave={leave || open}
+              icon={item.icon}
+              path={item.path}
+              title={item.title}
+              onPress={() => setLeave(false)}
+            />
+          ) : (
+            <>
+              <Typography
+                color="inherit"
+                variant="subtitle1"
+                sx={{
+                  opacity: leave || open ? 1 : 0,
+                  fontWeight: 600,
+                  pl: 1,
+                }}
+              >
+                {item.title}
+              </Typography>
+              {item.group!.map((e: any) => {
+                const active = e.path ? pathname === e.path : false;
+                return (
+                  <SideNavItem
+                    key={e.title}
+                    active={active}
+                    leave={leave || open}
+                    icon={e.icon}
+                    path={e.path}
+                    title={e.title}
+                    onPress={() => setLeave(false)}
+                  />
+                );
+              })}
+            </>
+          )}
+        </React.Fragment>
+      ))}
     </Box>
   );
   if (lgUp) {
@@ -142,13 +125,14 @@ export const SideNav = (props: navProps) => {
         variant="permanent"
         PaperProps={{
           sx: {
-            backgroundColor: '#04aab0',
+            backgroundColor: '#2F3746',
             color: 'white',
             boxShadow: '0px 4px 8px rgba(0, 0, 0, 0.2)',
-            width: 200
-          }
+            width: 200,
+          },
         }}
-        open={leave}>
+        open={leave}
+      >
         {content}
       </Drawer>
     );
@@ -161,10 +145,10 @@ export const SideNav = (props: navProps) => {
       open={open}
       PaperProps={{
         sx: {
-          backgroundColor: '#04aab0',
+          backgroundColor: '#2F3746',
           color: 'white',
-          width: 190
-        }
+          width: 30,
+        },
       }}
       sx={{ zIndex: (theme) => theme.zIndex.appBar + 100 }}
       variant="temporary"
@@ -172,4 +156,4 @@ export const SideNav = (props: navProps) => {
       {content}
     </Drawer>
   );
-}
+};

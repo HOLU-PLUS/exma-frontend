@@ -1,5 +1,5 @@
 
-import { Avatar, Box, IconButton, Stack, Typography, useMediaQuery } from '@mui/material';
+import { Avatar, Box, IconButton, Stack, useMediaQuery } from '@mui/material';
 import { useTheme } from '@mui/material/styles';
 import { MenuOutlined } from '@mui/icons-material';
 import { usePopover } from '@/hooks';
@@ -8,16 +8,12 @@ import noimage from '@/assets/images/profile.png';
 
 interface topProps {
   onNavOpen: () => void;
-  onTapSettings: () => void;
-  title: string;
 }
 
 
 export const TopNav = (props: topProps) => {
   const {
     onNavOpen,
-    onTapSettings,
-    title,
   } = props;
   const theme = useTheme();
   const lgUp = useMediaQuery(theme.breakpoints.up('md'));
@@ -53,10 +49,9 @@ export const TopNav = (props: topProps) => {
           <Stack
             alignItems="center"
             direction="row"
-            justifyContent="space-between"
+            justifyContent="end"
             sx={{ flexGrow: 2, pl: 10 }}
           >
-            <Typography variant="h6">{title}</Typography>
             <Avatar
               onClick={accountPopover.handleOpen}
               ref={accountPopover.anchorRef}
@@ -72,10 +67,6 @@ export const TopNav = (props: topProps) => {
         anchorEl={accountPopover.anchorRef.current}
         open={accountPopover.open}
         onClose={accountPopover.handleClose}
-        onTapSettings={() => {
-          accountPopover.handleClose();
-          onTapSettings();
-        }}
       />
     </>
   );

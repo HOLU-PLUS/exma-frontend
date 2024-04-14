@@ -1,11 +1,10 @@
-import { ComponentSearch, ComponentTablePagination, ShowTable } from "@/components";
+import { ComponentSearch, ComponentTablePagination } from "@/components";
 import { useGuestStore } from "@/hooks";
-import { StaffModel, GuestModel, ThethModel } from "@/models";
+import { GuestModel } from "@/models";
 import { applyPagination } from "@/utils/applyPagination";
 import { DeleteOutline, EditOutlined, KeyboardArrowDownOutlined, KeyboardArrowUpOutlined } from "@mui/icons-material";
 import { Checkbox, IconButton, Stack, Table, TableBody, TableCell, TableContainer, TableHead, TableRow } from "@mui/material";
-import React, { useCallback } from "react";
-import { useEffect, useState } from "react";
+import { Fragment, useEffect, useState } from "react";
 
 interface tableProps {
   handleEdit?: (patient: GuestModel) => void;
@@ -31,15 +30,14 @@ export const GuestTable = (props: tableProps) => {
   const [query, setQuery] = useState<string>('');
 
   const [openIndex, setOpenIndex] = useState<number | null>(null);
-  const [opendrawer, setOpendrawer] = useState<any>({ state: false, items: [] });
   
   useEffect(() => {
     getGuests()
   }, []);
 
   useEffect(() => {
-    const filtered = guests.filter((e: StaffModel) =>
-      e.user.name.toLowerCase().includes(query.toLowerCase())
+    const filtered = guests.filter((e: GuestModel) =>
+      e.name.toLowerCase().includes(query.toLowerCase())
     );
     const newList = applyPagination(
       query != '' ? filtered : guests,
@@ -49,9 +47,6 @@ export const GuestTable = (props: tableProps) => {
     setPatientList(newList)
   }, [guests, page, rowsPerPage, query])
 
-  const handleTheths = useCallback((state: boolean, items: ThethModel[]) => {
-    setOpendrawer({ state, items })
-  }, []);
 
   return (
     <Stack sx={{ paddingRight: '10px' }}>
@@ -65,8 +60,7 @@ export const GuestTable = (props: tableProps) => {
             <TableRow sx={{ backgroundColor: '#E2F6F0' }}>
               <TableCell sx={{ fontWeight: 'bold' }}>Nombre</TableCell>
               <TableCell sx={{ fontWeight: 'bold' }}>Apellido</TableCell>
-              {/* <TableCell sx={{ fontWeight: 'bold' }}>Telefono</TableCell> */}
-              <TableCell sx={{ fontWeight: 'bold' }}>Historial Medico</TableCell>
+              <TableCell sx={{ fontWeight: 'bold' }}>Correo</TableCell>
               {!stateSelect && <TableCell sx={{ fontWeight: 'bold' }}>Acciones</TableCell>}
             </TableRow>
           </TableHead>
@@ -74,7 +68,7 @@ export const GuestTable = (props: tableProps) => {
             {patientList.map((guest: GuestModel) => {
               const isSelected = items.includes(guest.id);
               return (
-                <React.Fragment key={guest.id} >
+                <Fragment key={guest.id} >
                   <TableRow >
                     {
                       stateSelect && <TableCell padding="checkbox">
@@ -84,9 +78,9 @@ export const GuestTable = (props: tableProps) => {
                         />
                       </TableCell>
                     }
-                    <TableCell>{guest.user.name}</TableCell>
-                    <TableCell>{guest.user.lastName}</TableCell>
-                    {/* <TableCell>{guest.user.phone}</TableCell> */}
+                    <TableCell>{guest.name}</TableCell>
+                    <TableCell>{guest.lastName}</TableCell>
+                    <TableCell>{guest.email}</TableCell>
                     <TableCell>
                       <IconButton
                         aria-label="expand row"
@@ -117,13 +111,7 @@ export const GuestTable = (props: tableProps) => {
                       </TableCell>
                     }
                   </TableRow>
-                  {/* <TreatmentTable
-                    patient={guest}
-                    open={openIndex == guest.id}
-                    treatments={guest.treatmentsIds}
-                    onViewTheths={(items) => handleTheths(true, items)}
-                  /> */}
-                </React.Fragment>
+                </Fragment>
               );
             })}
           </TableBody>
@@ -136,15 +124,6 @@ export const GuestTable = (props: tableProps) => {
         page={page}
         limit={rowsPerPage}
       />
-      {
-        <ShowTable
-          open={opendrawer.state}
-          handleClose={() => handleTheths(false, [])}
-          title="Dientes"
-          headers={['#', 'Nombre', 'Modulo']}
-          data={opendrawer.items}
-        />
-      }
     </Stack >
   );
 }

@@ -1,9 +1,9 @@
-import { ComponentDate, ComponentInput, ComponentSelect, ModalSelectComponent } from "@/components"
-import { useForm, useStaffStore } from "@/hooks";
-import { FormAdministratorModel, FormAdministratorValidations, RoleModel } from "@/models";
-import { Button, Dialog, DialogActions, DialogContent, DialogTitle, Grid } from "@mui/material"
-import { FormEvent, useCallback, useState } from "react";
-import { RoleTable } from "../role";
+import { ComponentInput, ComponentSelect, ModalSelectComponent } from '@/components';
+import { useForm, useStaffStore } from '@/hooks';
+import { FormAdministratorModel, FormAdministratorValidations, RoleModel } from '@/models';
+import { Button, Dialog, DialogActions, DialogContent, DialogTitle, Grid } from '@mui/material';
+import { FormEvent, useCallback, useState } from 'react';
+import { RoleTable } from '../role';
 
 interface createProps {
   open: boolean;
@@ -12,37 +12,36 @@ interface createProps {
 }
 
 const formFields: FormAdministratorModel = {
-  identityCard: 0,
   name: '',
   lastName: '',
-  phone: 0,
-  birthDate: null,
-  gender: '',
-  roleId: null,
-}
+  email: '',
+  role: null,
+};
 
 const formValidations: FormAdministratorValidations = {
-  identityCard: [(value: number) => value != 0, 'Debe ingresar el numero de carnet'],
   name: [(value: string) => value.length >= 1, 'Debe ingresar el nombre'],
   lastName: [(value: string) => value.length >= 1, 'Debe ingresar el apellido'],
-  phone: [(value: number) => value != 0, 'Debe ingresar el numero de telefono'],
-  birthDate: [(value: Date) => value != null, 'Debe ingresar la fecha de nacimiento'],
-  gender: [(value: string) => value.length >= 1, 'Debe ingresar el genero'],
-  roleId: [(value: RoleModel) => value != null, 'Debe ingresar el nombre'],
-}
+  email: [(value: string) => value.length >= 1, 'Debe ingresar el correo'],
+  role: [(value: RoleModel) => value != null, 'Debe ingresar el nombre'],
+};
 export const StaffCreate = (props: createProps) => {
-  const {
-    open,
-    handleClose,
-    item,
-  } = props;
+  const { open, handleClose, item } = props;
   const { createStaff, updateStaff } = useStaffStore();
 
   const [formSubmitted, setFormSubmitted] = useState(false);
   const {
-    identityCard, name, lastName, phone, birthDate, gender, roleId,
-    onInputChange, isFormValid, onResetForm, onValueChange,
-    identityCardValid, nameValid, lastNameValid, phoneValid, birthDateValid, genderValid, roleIdValid,
+    name,
+    lastName,
+    email,
+    role,
+    onInputChange,
+    isFormValid,
+    onResetForm,
+    onValueChange,
+    nameValid,
+    lastNameValid,
+    emailValid,
+    roleValid,
   } = useForm(item ?? formFields, formValidations);
 
   const sendSubmit = (event: FormEvent<HTMLFormElement>) => {
@@ -50,31 +49,23 @@ export const StaffCreate = (props: createProps) => {
     setFormSubmitted(true);
     if (!isFormValid) return;
     if (item == null) {
-      createStaff(
-        {
-          identityCard: parseInt(identityCard),
-          name: name.trim(),
-          lastName: lastName.trim(),
-          phone: parseInt(phone),
-          birthDate: birthDate,
-          gender: gender,
-          roleId: roleId.id,
-        });
+      createStaff({
+        name: name.trim(),
+        lastName: lastName.trim(),
+        email: email.trim(),
+        roleId: role.id,
+      });
     } else {
-      updateStaff(item.administratorId,
-        {
-          identityCard: identityCard,
-          name: name.trim(),
-          lastName: lastName.trim(),
-          phone: phone,
-          birthDate: birthDate,
-          gender: gender,
-          roleId: roleId.id,
-        });
+      updateStaff(item.administratorId, {
+        name: name.trim(),
+        lastName: lastName.trim(),
+        email: email.trim(),
+        roleId: role.id,
+      });
     }
     handleClose();
     onResetForm();
-  }
+  };
 
   const [modalRole, setModalRole] = useState(false);
   const handleModalRole = useCallback((value: boolean) => {
@@ -82,12 +73,11 @@ export const StaffCreate = (props: createProps) => {
   }, []);
   return (
     <>
-      {
-        modalRole &&
+      {modalRole && (
         <ModalSelectComponent
           stateSelect={true}
           stateMultiple={false}
-          title='Roles:'
+          title="Roles:"
           opendrawer={modalRole}
           handleDrawer={handleModalRole}
         >
@@ -95,32 +85,21 @@ export const StaffCreate = (props: createProps) => {
             stateSelect={true}
             limitInit={5}
             itemSelect={(v) => {
-              if (roleId == null || roleId.id != v.id) {
-                onValueChange('roleId', v)
-                handleModalRole(false)
+              if (role == null || role.id != v.id) {
+                onValueChange('role', v);
+                handleModalRole(false);
               }
             }}
-            items={roleId == null ? [] : [roleId.id]}
+            items={role == null ? [] : [role.id]}
           />
         </ModalSelectComponent>
-      }
-      <Dialog open={open} onClose={handleClose} >
-        <DialogTitle>{item == null ? 'Nuevo Administrador' : `${item.name}`}</DialogTitle>
+      )}
+      <Dialog open={open} onClose={handleClose}>
+        <DialogTitle>{item == null ? 'Nuevo Staff' : `${item.name}`}</DialogTitle>
         <form onSubmit={sendSubmit}>
           <DialogContent sx={{ display: 'flex' }}>
             <Grid container>
-              <Grid item xs={12} sm={4} sx={{ padding: '5px' }}>
-                <ComponentInput
-                  type="text"
-                  label="Carnet de Identidad"
-                  name="identityCard"
-                  value={identityCard}
-                  onChange={onInputChange}
-                  error={!!identityCardValid && formSubmitted}
-                  helperText={formSubmitted ? identityCardValid : ''}
-                />
-              </Grid>
-              <Grid item xs={12} sm={4} sx={{ padding: '5px' }}>
+              <Grid item xs={12} sm={6} sx={{ padding: '5px' }}>
                 <ComponentInput
                   type="text"
                   label="Nombre"
@@ -131,7 +110,7 @@ export const StaffCreate = (props: createProps) => {
                   helperText={formSubmitted ? nameValid : ''}
                 />
               </Grid>
-              <Grid item xs={12} sm={4} sx={{ padding: '5px' }}>
+              <Grid item xs={12} sm={6} sx={{ padding: '5px' }}>
                 <ComponentInput
                   type="text"
                   label="Apellido"
@@ -142,59 +121,41 @@ export const StaffCreate = (props: createProps) => {
                   helperText={formSubmitted ? lastNameValid : ''}
                 />
               </Grid>
-              <Grid item xs={12} sm={4} sx={{ padding: '5px' }}>
+              <Grid item xs={12} sm={6} sx={{ padding: '5px' }}>
                 <ComponentInput
                   type="text"
-                  label="Genero"
-                  name="gender"
-                  value={gender}
+                  label="Correo"
+                  name="email"
+                  value={email}
                   onChange={onInputChange}
-                  error={!!genderValid && formSubmitted}
-                  helperText={formSubmitted ? genderValid : ''}
-                />
-              </Grid>
-              <Grid item xs={12} sm={4} sx={{ padding: '5px' }}>
-                <ComponentInput
-                  type="text"
-                  label="Telefono"
-                  name="phone"
-                  value={phone}
-                  onChange={onInputChange}
-                  error={!!phoneValid && formSubmitted}
-                  helperText={formSubmitted ? phoneValid : ''}
-                />
-              </Grid>
-              <Grid item xs={12} sm={4} sx={{ padding: '5px' }}>
-                <ComponentDate
-                  title="Fecha de nacimiento"
-                  date={birthDate}
-                  onChange={(date) => onValueChange('birthDate', date)}
-                  error={!!birthDateValid && formSubmitted}
-                  helperText={formSubmitted ? birthDateValid : ''}
+                  error={!!emailValid && formSubmitted}
+                  helperText={formSubmitted ? emailValid : ''}
                 />
               </Grid>
               <Grid item xs={12} sm={6} sx={{ padding: '5px' }}>
                 <ComponentSelect
-                  label={roleId != null ? 'Rol' : ''}
-                  title={roleId != null ? roleId.name : 'Rol'}
+                  label={role != null ? 'Rol' : ''}
+                  title={role != null ? role.name : 'Rol'}
                   onPressed={() => handleModalRole(true)}
-                  error={!!roleIdValid && formSubmitted}
-                  helperText={formSubmitted ? roleIdValid : ''}
+                  error={!!roleValid && formSubmitted}
+                  helperText={formSubmitted ? roleValid : ''}
                 />
               </Grid>
             </Grid>
           </DialogContent>
           <DialogActions>
-            <Button onClick={() => {
-              onResetForm();
-              handleClose()
-            }}>Cancelar</Button>
-            <Button type="submit">
-              {item == null ? 'CREAR' : 'EDITAR'}
+            <Button
+              onClick={() => {
+                onResetForm();
+                handleClose();
+              }}
+            >
+              Cancelar
             </Button>
+            <Button type="submit">{item == null ? 'CREAR' : 'EDITAR'}</Button>
           </DialogActions>
         </form>
       </Dialog>
     </>
-  )
-}
+  );
+};

@@ -50,6 +50,7 @@ export const LoginAdmin = () => {
             error={!!emailValid && formSubmitted}
             helperText={formSubmitted ? emailValid : ''}
           />
+          <div style={{ height: 10 }} />
           <ComponentInput
             type={showPassword ? 'text' : 'password'}
             label="Contraseña"

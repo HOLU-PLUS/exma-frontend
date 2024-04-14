@@ -1,10 +1,18 @@
-import { useState } from 'react';
-import { Box, Step, StepContent, StepLabel, Stepper, IconButton } from '@mui/material';
-import AddIcon from '@mui/icons-material/Add';
-import RemoveIcon from '@mui/icons-material/Remove';
+import { useState, useEffect } from 'react';
+import { Step, StepContent, Stepper, StepButton } from '@mui/material';
 import { ActivityCreate } from '.';
+import { useEventStore } from '@/hooks';
+import { ActivityModel, FormActivityModel } from '@/models';
+import { ComponentButton } from '@/components';
 
-export const StepsActivity = () => {
+interface Props {
+  disable: (state: boolean) => void;
+}
+
+export const StepsActivity = (props: Props) => {
+  const { disable } = props;
+
+  const { event, InsertActivity } = useEventStore();
   const [activeStep, setActiveStep] = useState(0);
   const handleNext = () => {
     setActiveStep((prevActiveStep) => prevActiveStep + 1);
@@ -12,41 +20,47 @@ export const StepsActivity = () => {
   const handleBack = () => {
     setActiveStep((prevActiveStep) => prevActiveStep - 1);
   };
-  const [activities, setActivities] = useState([<ActivityCreate key={0} handleNext={() => handleNext()} disabledBtnBack={activeStep === 0} />]);
+  const handleStep = (step: number) => () => {
+    setActiveStep(step);
+  };
 
   const addStep = () => {
-    setActivities((prevActivities) => [
-      ...prevActivities,
-      <ActivityCreate
-        key={prevActivities.length}
-        handleNext={() => handleNext()}
-        handleBack={() => handleBack()}
-      />,
-    ]);
+    const activity: FormActivityModel = {
+      id: event.activities[event.activities.length - 1].id+1,
+      name: '',
+      description: '',
+      start: null,
+      end: null,
+    };
+    InsertActivity(activity);
   };
 
-  const removeStep = () => {
-    if (activities.length > 1) {
-      setActivities((prevActivities) => prevActivities.slice(0, -1));
-      setActiveStep((prevActiveStep) => Math.min(prevActiveStep, activities.length - 2));
+  useEffect(() => {
+    console.log(event)
+    if (activeStep == event.activities.length) {
+      disable(false);
+    } else {
+      disable(true);
     }
-  };
+  }, [activeStep, event.activities]);
 
   return (
     <>
-      <Box sx={{ display: 'flex', justifyContent: 'space-between', mb: 2 }}>
-        <IconButton onClick={removeStep} disabled={activities.length === 1}>
-          <RemoveIcon />
-        </IconButton>
-        <IconButton onClick={addStep}>
-          <AddIcon />
-        </IconButton>
-      </Box>
+    <ComponentButton onClick={addStep} text="AGREGAR ACTIVIDAD" width="100%" />
       <Stepper activeStep={activeStep} orientation="vertical">
-        {activities.map((activity, index) => (
+        {event.activities.map((item:ActivityModel,index:number) => (
           <Step key={index}>
-            <StepLabel>{`Actividad N° ${index + 1}`}</StepLabel>
-            <StepContent>{activity}</StepContent>
+            <StepButton color="inherit" onClick={handleStep(index)}>
+            {`Actividad N° ${index + 1}`}
+            </StepButton>
+            <StepContent>
+            <ActivityCreate
+                key={index}
+                id={item.id}
+                handleNext={() => handleNext()}
+                handleBack={() => handleBack()}
+              />
+            </StepContent>
           </Step>
         ))}
       </Stepper>

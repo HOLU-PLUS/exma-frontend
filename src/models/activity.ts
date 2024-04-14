@@ -1,13 +1,14 @@
 export interface ActivityModel {
   id: number;
   name: string;
-  price: number;
-  start: Date;
-  end: Date;
+  description: string;
+  start: Date|null;
+  end: Date|null;
 }
 
 /* FORM */
 export interface FormActivityModel {
+  id?:number;
   name: string;
   description: string;
   start: Date | null;

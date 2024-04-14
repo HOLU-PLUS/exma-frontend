@@ -22,8 +22,6 @@ export const useForm = (initialForm: any = {}, formValidations: any = {}) => {
 
   const onInputChange = ({ target }: { target: any }, uppercase = false, onlynumber = false) => {
     const { name, value } = target;
-    console.log(name);
-    console.log(value);
 
     if (onlynumber) {
       // Si solo se permiten números, elimina cualquier carácter no numérico del valor
