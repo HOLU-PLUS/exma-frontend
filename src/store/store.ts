@@ -10,6 +10,7 @@ import {
     thethSlice,
     eventSlice,
     staffSlice,
+    attendanceSlice,
 
 
 } from '.';
@@ -26,6 +27,7 @@ export const store = configureStore({
         stageTypes: stageTypeSlice.reducer,
         theths: thethSlice.reducer,
         reports: reportSlice.reducer,
+        attendances: attendanceSlice.reducer,
     },
     middleware: (getDefaultMiddleware) => getDefaultMiddleware({
         serializableCheck: false

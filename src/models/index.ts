@@ -9,3 +9,4 @@ export * from './stageType';
 export * from './theth';
 export * from './payment';
 export * from './activity';
+export * from './attendance';

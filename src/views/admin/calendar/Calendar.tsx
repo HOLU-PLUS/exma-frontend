@@ -1,49 +1,36 @@
-import { getMessagesES, localizer } from "@/helpers";
+import { getMessagesES, localizer } from '@/helpers';
 
-import { useEventStore } from "@/hooks";
+import { useEventStore } from '@/hooks';
 import { Calendar } from 'react-big-calendar';
 import 'react-big-calendar/lib/css/react-big-calendar.css';
 import './styles.css';
-import { Paper } from "@mui/material";
-import { useCallback, useEffect, useState } from "react";
-import { EventModel } from "@/models";
-import { CalendarEvent, EventDialog } from ".";
-
+import { Paper } from '@mui/material';
+import { useEffect, useState } from 'react';
+import { EventModel } from '@/models';
+import { CalendarEvent, EventDialog } from '.';
 
 interface calendarProps {
   screenHeight: number;
 }
 export const CalendarComponent = (props: calendarProps) => {
-  const {
-    screenHeight,
-  } = props;
-  const [itemSelect, setitemSelect] = useState<EventModel>()
+  const { screenHeight } = props;
   const [openDialog, setopenDialog] = useState(false);
-  const { events = [], getEvents } = useEventStore()
-
+  const { events = [], getEvents, resetEvent } = useEventStore();
 
   useEffect(() => {
     getEvents();
-  }, [])
-  const onSelect = (event: EventModel) => {
-    setitemSelect(event)
-    handleDialog(true);
-  }
-  const handleDialog = useCallback((value: boolean) => {
-    setopenDialog(value);
   }, []);
-  // .filter((treatment: TreatmentModel) => treatment.state)
   return (
     <>
-      <Paper sx={{ p: .5, borderRadius: '10px' }}>
+      <Paper sx={{ p: 0.5, borderRadius: '10px' }}>
         <Calendar
-          culture='es'
+          culture="es"
           localizer={localizer}
-          events={[...events.map(((event: EventModel) =>
-          ({
-            title: event.name,
-            ...event
-          })))
+          events={[
+            ...events.map((event: EventModel) => ({
+              title: event.name,
+              ...event,
+            })),
           ]}
           style={{ height: `${screenHeight - 150}px`, cursor: 'pointer' }}
           messages={getMessagesES()}
@@ -54,24 +41,20 @@ export const CalendarComponent = (props: calendarProps) => {
                 color: '#000',
                 opacity: 0.6,
                 display: 'block',
-                fontSize: '0.9rem'
+                fontSize: '0.9rem',
               },
             };
           }}
           components={{
-            event: CalendarEvent
+            event: CalendarEvent,
           }}
-          onSelectEvent={onSelect}
+          onSelectEvent={(event) => {
+            resetEvent(event);
+            setopenDialog(true);
+          }}
         />
       </Paper>
-      {
-        itemSelect &&
-        <EventDialog
-          open={openDialog}
-          handleClose={() => handleDialog(false)}
-          event={itemSelect}
-        />
-      }
+      {openDialog && <EventDialog open={openDialog} handleClose={() => setopenDialog(false)} />}
     </>
-  )
-}
+  );
+};

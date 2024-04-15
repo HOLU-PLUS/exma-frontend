@@ -5,14 +5,13 @@ import { useEventStore } from '@/hooks';
 interface createProps {
   open: boolean;
   handleClose: () => void;
-  item: any;
 }
 
 const steps = ['Nuevo evento', 'Actividades', 'Confirmación'];
 
 export const EventCreateSteps = (props: createProps) => {
-  const { open, handleClose, item } = props;
-  const {createEvent,resetEvent} = useEventStore();
+  const { open, handleClose } = props;
+  const {event, createEvent,resetEvent} = useEventStore();
   const eventCreateRef: any = useRef();
 
   const [activeStep, setActiveStep] = useState(0);
@@ -24,7 +23,7 @@ export const EventCreateSteps = (props: createProps) => {
     if (activeStep == 0 && !eventCreateRef.current!.validate()) return;
     if (activeStep == 2){
       await createEvent();
-      resetEvent();
+      resetEvent(null);
       handleClose();
       return;
     }
@@ -38,7 +37,7 @@ export const EventCreateSteps = (props: createProps) => {
   
   return (
     <Dialog open={open} onClose={handleClose}>
-      <DialogTitle>{item == null ? 'Nuevo Evento' : `${item.name}`}</DialogTitle>
+      <DialogTitle>{event == null ? 'Nuevo Evento' : `${event.name}`}</DialogTitle>
       <DialogContent>
         <Stepper nonLinear activeStep={activeStep}>
           {steps.map((label) => (

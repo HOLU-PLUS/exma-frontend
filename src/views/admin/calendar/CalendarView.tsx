@@ -1,21 +1,19 @@
-import { ComponentButton } from "@/components"
-import { Stack, SvgIcon, Typography } from "@mui/material"
-import { useCallback, useEffect, useState } from "react";
-import { CalendarComponent } from ".";
-import { Add } from "@mui/icons-material";
-import { GuestModel } from "@/models";
-import { EventCreateSteps } from "../event";
+import { ComponentButton } from '@/components';
+import { Stack, SvgIcon, Typography } from '@mui/material';
+import { useEffect, useState } from 'react';
+import { CalendarComponent } from '.';
+import { Add } from '@mui/icons-material';
+import { EventCreateSteps } from '../event';
+import { useEventStore } from '@/hooks';
 
 export const CalendarView = () => {
   const [openDialog, setopenDialog] = useState(false);
-  const [itemEdit, setItemEdit] = useState<GuestModel | null>(null);
   const [screenHeight, setScreenHeight] = useState(window.innerHeight);
+  const { resetEvent } = useEventStore();
   /*CONTROLADOR DEL DIALOG PARA CREAR O EDITAR */
-  const handleDialog = useCallback((value: boolean) => {
-    if (!value) setItemEdit(null)
+  const handleDialog = (value: boolean) => {
     setopenDialog(value);
-  }, []);
-
+  };
 
   useEffect(() => {
     const handleResize = () => {
@@ -25,29 +23,26 @@ export const CalendarView = () => {
     return () => window.removeEventListener('resize', handleResize);
   }, [window.innerHeight]);
 
-
   return (
     <>
       <Stack direction="row" justifyContent="space-between">
         <Typography variant="h6">Eventos</Typography>
         <ComponentButton
           text="Nuevo evento"
-          onClick={() => handleDialog(true)}
-          startIcon={<SvgIcon fontSize="small"><Add /></SvgIcon>}
+          onClick={() => {
+            resetEvent(null);
+            handleDialog(true);
+          }}
+          startIcon={
+            <SvgIcon fontSize="small">
+              <Add />
+            </SvgIcon>
+          }
         />
       </Stack>
       <div style={{ height: 10 }} />
-      <CalendarComponent
-        screenHeight={screenHeight}
-      />
-      {
-        openDialog &&
-        <EventCreateSteps
-          open={openDialog}
-          handleClose={() => handleDialog(false)}
-          item={itemEdit}
-        />
-      }
+      <CalendarComponent screenHeight={screenHeight} />
+      {openDialog && <EventCreateSteps open={openDialog} handleClose={() => handleDialog(false)} />}
     </>
-  )
-}
+  );
+};

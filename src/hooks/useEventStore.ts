@@ -1,11 +1,12 @@
 import { useDispatch, useSelector } from 'react-redux';
 import { coffeApi } from '@/services';
-import { setEvents, setAddEvent, setUpdateEvent, setEvent, setAddActivity, setRemoveActivity, setResetEvent } from '@/store';
+import { setEvents, setAddEvent, setUpdateEvent, setEvent, setAddActivity, setRemoveActivity, setResetEvent, setAttendances } from '@/store';
 import { useAlertStore, useErrorStore } from '.';
 import { EventModel, FormActivityModel } from '@/models';
 
 export const useEventStore = () => {
   const { event, events } = useSelector((state: any) => state.events);
+  const {attendances} = useSelector((state:any)=> state.attendances);
   const dispatch = useDispatch();
   const { handleError } = useErrorStore();
   const { showSuccess, showWarning, showError } = useAlertStore();
@@ -16,6 +17,16 @@ export const useEventStore = () => {
       const { data } = await coffeApi.get('/event');
       console.log(data);
       dispatch(setEvents({ events: data.events }));
+    } catch (error) {
+      throw handleError(error);
+    }
+  };
+
+  const getGuestByEvent = async () => {
+    try {
+      const { data } = await coffeApi.get(`/event/all-guest/${event.id}`);
+      console.log(data);
+      dispatch(setAttendances({attendances:data.attendances}));
     } catch (error) {
       throw handleError(error);
     }
@@ -72,8 +83,8 @@ export const useEventStore = () => {
   };
 
   //*event
-  const resetEvent = () => {
-    dispatch(setResetEvent({}));
+  const resetEvent = (event: EventModel|null) => {
+    dispatch(setResetEvent({event:event}));
   }
   const InsertEvent = (event: EventModel) => {
     try {
@@ -100,8 +111,10 @@ export const useEventStore = () => {
     //* Propiedades
     event,
     events,
+    attendances,
     //* Métodos eventos
     getEvents,
+    getGuestByEvent,
     createEvent,
     registerAttendanceEvent,
     updateEvent,

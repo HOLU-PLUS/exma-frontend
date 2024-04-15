@@ -16,7 +16,7 @@ export const EventConfrim = () => {
   const { event } = useEventStore();
   return (
     <>
-      <Typography variant='h6' >{event.name}</Typography>
+      <Typography variant="h6">{event.name}</Typography>
       <Typography>{`Descripción: ${event.description}`}</Typography>
       <Typography>{`${format(new Date(event.start!), 'EEEE dd-MMMM-yyyy HH:mm', {
         locale: esES,
@@ -25,7 +25,7 @@ export const EventConfrim = () => {
         locale: esES,
       })}`}</Typography>
 
-<Typography>Actividades:</Typography>
+      <Typography>Actividades:</Typography>
       <TableContainer>
         <Table sx={{ minWidth: 350 }} size="small">
           <TableHead>

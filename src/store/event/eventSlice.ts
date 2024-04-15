@@ -40,8 +40,8 @@ export const eventSlice = createSlice({
       // })];
     },
     //event
-    setResetEvent: (state,_)=>{
-      state.event = null;
+    setResetEvent: (state,action)=>{
+      state.event = action.payload.event;
     },
     setEvent: (state, action) => {
       state.event = state.event
