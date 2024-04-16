@@ -1,6 +1,6 @@
 import { ComponentInput, ComponentSelect, ModalSelectComponent } from '@/components';
 import { useForm, useStaffStore } from '@/hooks';
-import { FormAdministratorModel, FormAdministratorValidations, RoleModel } from '@/models';
+import { FormAdministratorModel, FormAdministratorValidations, RoleModel, StaffModel } from '@/models';
 import { Button, Dialog, DialogActions, DialogContent, DialogTitle, Grid } from '@mui/material';
 import { FormEvent, useCallback, useState } from 'react';
 import { RoleTable } from '../role';
@@ -8,7 +8,7 @@ import { RoleTable } from '../role';
 interface createProps {
   open: boolean;
   handleClose: () => void;
-  item: any;
+  item: StaffModel|null;
 }
 
 const formFields: FormAdministratorModel = {
@@ -44,19 +44,19 @@ export const StaffCreate = (props: createProps) => {
     roleValid,
   } = useForm(item ?? formFields, formValidations);
 
-  const sendSubmit = (event: FormEvent<HTMLFormElement>) => {
+  const sendSubmit = async (event: FormEvent<HTMLFormElement>) => {
     event.preventDefault();
     setFormSubmitted(true);
     if (!isFormValid) return;
     if (item == null) {
-      createStaff({
+      await createStaff({
         name: name.trim(),
         lastName: lastName.trim(),
         email: email.trim(),
         roleId: role.id,
       });
     } else {
-      updateStaff(item.administratorId, {
+      await updateStaff(item.id, {
         name: name.trim(),
         lastName: lastName.trim(),
         email: email.trim(),

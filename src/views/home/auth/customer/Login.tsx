@@ -1,5 +1,5 @@
 import { ComponentButton, ComponentInput } from "@/components"
-import { useForm, useGuestStore } from "@/hooks"
+import { useAuthStore, useForm } from "@/hooks"
 import { Visibility, VisibilityOff } from "@mui/icons-material"
 import { IconButton, Typography } from "@mui/material"
 import { useState } from "react"
@@ -15,7 +15,7 @@ const formValidations = {
 
 export const LoginCustomer = () => {
 
-  const { logInGuest } = useGuestStore();
+  const { authGuest } = useAuthStore();
 
   const [formSubmitted, setFormSubmitted] = useState(false);
   const { email, password, onInputChange, isFormValid, emailValid, passwordValid } = useForm(loginFormFields, formValidations);
@@ -26,7 +26,7 @@ export const LoginCustomer = () => {
     event.preventDefault();
     setFormSubmitted(true);
     if (!isFormValid) return;
-    logInGuest({ email, password });
+    authGuest({ email, password });
   }
 
   const [showPassword, setShowPassword] = useState(false);

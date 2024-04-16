@@ -1,13 +1,13 @@
 import { ComponentInput } from '@/components';
 import { useForm, useSpeakerStore } from '@/hooks';
-import { FormSpeakerModel, FormSpeakerValidations } from '@/models';
+import { FormSpeakerModel, FormSpeakerValidations, SpeakerModel } from '@/models';
 import { Button, Dialog, DialogActions, DialogContent, DialogTitle, Grid } from '@mui/material';
 import { FormEvent, useState } from 'react';
 
 interface createProps {
   open: boolean;
   handleClose: () => void;
-  item: any;
+  item: SpeakerModel|null;
 }
 
 const formFields: FormSpeakerModel = {
@@ -43,19 +43,19 @@ export const SpeakerCreate = (props: createProps) => {
     emailValid,
   } = useForm(item ?? formFields, formValidations);
 
-  const sendSubmit = (event: FormEvent<HTMLFormElement>) => {
+  const sendSubmit = async (event: FormEvent<HTMLFormElement>) => {
     event.preventDefault();
     setFormSubmitted(true);
     if (!isFormValid) return;
     if (item == null) {
-      createSpeaker({
+      await createSpeaker({
         ci: ci.trim(),
         name: name.trim(),
         lastName: lastName.trim(),
         email: email.trim(),
       });
     } else {
-      updateSpeaker(item.patientId, {
+      await updateSpeaker(item.id, {
         ci: ci.trim(),
         name: name.trim(),
         lastName: lastName.trim(),

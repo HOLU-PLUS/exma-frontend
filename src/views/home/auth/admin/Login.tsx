@@ -14,7 +14,7 @@ const formValidations = {
 }
 
 export const LoginAdmin = () => {
-  const { startLogin } = useAuthStore();
+  const { authAdministrator } = useAuthStore();
 
   const [formSubmitted, setFormSubmitted] = useState(false);
   const { email, password, onInputChange, isFormValid, emailValid, passwordValid } = useForm(loginFormFields, formValidations);
@@ -25,7 +25,7 @@ export const LoginAdmin = () => {
     event.preventDefault();
     setFormSubmitted(true);
     if (!isFormValid) return;
-    startLogin({ email, password });
+    authAdministrator({ email, password });
   }
 
   const [showPassword, setShowPassword] = useState(false);

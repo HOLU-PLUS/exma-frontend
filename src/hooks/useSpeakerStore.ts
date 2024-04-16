@@ -23,7 +23,7 @@ export const useSpeakerStore = () => {
     try {
       const { data } = await coffeApi.post(`/speaker`, body);
       console.log(data)
-      dispatch(setAddSpeaker({ speaker: data.speaker }));
+      dispatch(setAddSpeaker({ speaker: data }));
       showSuccess('Ponente creado correctamente');
     } catch (error) {
       throw handleError(error);
@@ -34,7 +34,7 @@ export const useSpeakerStore = () => {
     try {
       const { data } = await coffeApi.put(`/speaker/${id}`, body);
       console.log(data)
-      dispatch(setUpdateSpeaker({ speaker: data.speaker }));
+      dispatch(setUpdateSpeaker({ speaker: data }));
       showSuccess('Ponente modificado correctamente');
     } catch (error) {
       throw handleError(error);

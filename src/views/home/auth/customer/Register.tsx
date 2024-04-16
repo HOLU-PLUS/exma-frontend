@@ -1,5 +1,5 @@
 import { ComponentButton, ComponentInput } from "@/components"
-import { useForm, useGuestStore } from "@/hooks"
+import { useAuthStore, useForm } from "@/hooks"
 import { FormGuestModel, FormGuestValidations } from "@/models"
 import { Typography } from "@mui/material"
 import { useState } from "react"
@@ -18,7 +18,7 @@ const formValidations: FormGuestValidations = {
 
 export const RegisterCustomer = () => {
 
-  const { registerGuest } = useGuestStore();
+  const { registerGuest } = useAuthStore();
 
   const [formSubmitted, setFormSubmitted] = useState(false);
   const { name,lastName, email, onInputChange, isFormValid, nameValid,lastNameValid, emailValid } = useForm(formFields, formValidations);

@@ -5,8 +5,6 @@ import { applyPagination } from '@/utils/applyPagination';
 import {
   DeleteOutline,
   EditOutlined,
-  KeyboardArrowDownOutlined,
-  KeyboardArrowUpOutlined,
 } from '@mui/icons-material';
 import {
   Checkbox,
@@ -38,7 +36,6 @@ export const SpeakerTable = (props: tableProps) => {
   const [speakerList, setSpeakerList] = useState<SpeakerModel[]>([]);
   const [query, setQuery] = useState<string>('');
 
-  const [openIndex, setOpenIndex] = useState<number | null>(null);
 
   useEffect(() => {
     getSpeakers();
@@ -80,19 +77,6 @@ export const SpeakerTable = (props: tableProps) => {
                     <TableCell>{speaker.name}</TableCell>
                     <TableCell>{speaker.lastName}</TableCell>
                     <TableCell>{speaker.email}</TableCell>
-                    <TableCell>
-                      <IconButton
-                        aria-label="expand row"
-                        size="small"
-                        onClick={() => setOpenIndex(openIndex == speaker.id ? null : speaker.id)}
-                      >
-                        {openIndex == speaker.id ? (
-                          <KeyboardArrowUpOutlined />
-                        ) : (
-                          <KeyboardArrowDownOutlined />
-                        )}
-                      </IconButton>
-                    </TableCell>
                     {!stateSelect && (
                       <TableCell align="right">
                         <Stack alignItems="center" direction="row" spacing={2}>

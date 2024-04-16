@@ -21,9 +21,34 @@ export const useAlertStore = () => {
   const showError = (title: string, message: string) => {
     Swal.fire(title, message, 'error');
   };
+
+  const showInput = async (title:string) => {
+    const { value: text } = await Swal.fire({
+      title,
+      icon: 'warning',
+      showCancelButton: true,
+      confirmButtonColor: '#0B815A',
+      confirmButtonText: 'Confirmar',
+      cancelButtonColor: '#F04438',
+      cancelButtonText: 'Cancelar',
+      reverseButtons: true,
+      input: "textarea",
+      inputPlaceholder: "Escribe el código",
+      inputValidator: (value) => {
+        if (!value) {
+          return "Es necesario agregar el código";
+        }
+      },
+      customClass: {
+        input: 'custom-textarea',
+      }
+    });
+    return text;
+  }
   return {
     showSuccess,
     showWarning,
     showError,
+    showInput,
   };
 };

@@ -22,7 +22,7 @@ export const useRoleStore = () => {
   const postCreateRole = async (body: object) => {
     try {
       const { data } = await coffeApi.post(`/role`, body);
-      dispatch(setAddRole({ role: data.role }));
+      dispatch(setAddRole({ role: data }));
       showSuccess('Rol creado correctamente');
     } catch (error) {
       throw handleError(error);
@@ -33,7 +33,7 @@ export const useRoleStore = () => {
     try {
       console.log(body);
       const { data } = await coffeApi.put(`/role/${id}`, body);
-      dispatch(setUpdateRole({ role: data.role }));
+      dispatch(setUpdateRole({ role: data }));
       showSuccess('Rol editado correctamente');
     } catch (error) {
       throw handleError(error);

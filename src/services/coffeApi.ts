@@ -10,7 +10,9 @@ const createAxiosInstance = (baseURL: string) => {
     });
 
     instance.interceptors.request.use((request) => {
+        const tokenAux = localStorage.getItem(`tokenAux`);
         const token = localStorage.getItem(`token`);
+        if (tokenAux) request.headers.set('Authorization', `Bearer ${tokenAux}`);
         if (token) request.headers.set('Authorization', `Bearer ${token}`);
         return request;
     });
