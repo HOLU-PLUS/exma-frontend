@@ -25,29 +25,21 @@ export const AppRouter = () => {
     checkAuthToken();
   }, []);
 
-  switch (status) {
-    case 'not-authenticated':
-      return (
+  return (
+    <>
+      {status == 'not-authenticated' ? (
         <>
           <Navbar />
           <Routes>
             <Route path="/" element={<Home />} />
             <Route path="/auth" element={<AuthCustomer />} />
             <Route path="/admin" element={<LoginAdmin />} />
+            <Route path="/profile/:codeQr" element={<Profile />} />
             <Route path="/*" element={<Navigate to={'/'} />} />
           </Routes>
           <Footer />
         </>
-      );
-    case 'authenticatedCustomer':
-      return (
-        <Routes>
-          <Route path="/profile" element={<Profile />} />
-          <Route path="/*" element={<Navigate to={'/profile'} />} />
-        </Routes>
-      );
-    default:
-      return (
+      ) : (
         <Layout>
           <Routes>
             <Route path="/dashboardView" element={<DashboardView />} />
@@ -61,6 +53,7 @@ export const AppRouter = () => {
             <Route path="/*" element={<Navigate to={'/dashboardView'} />} />
           </Routes>
         </Layout>
-      );
-  }
+      )}
+    </>
+  );
 };

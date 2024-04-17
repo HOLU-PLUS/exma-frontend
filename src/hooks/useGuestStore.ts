@@ -1,10 +1,10 @@
 import { useDispatch, useSelector } from 'react-redux';
 import { coffeApi } from '@/services';
-import { setGuests, setDeleteGuest } from '@/store';
+import { setGuests, setDeleteGuest, setGuest } from '@/store';
 import { useAlertStore, useErrorStore } from '.';
 
 export const useGuestStore = () => {
-  const { guests } = useSelector((state: any) => state.guests);
+  const { guest, guests } = useSelector((state: any) => state.guests);
   const dispatch = useDispatch();
   const { handleError } = useErrorStore();
   const { showSuccess, showWarning, showError } = useAlertStore();
@@ -14,6 +14,16 @@ export const useGuestStore = () => {
       const { data } = await coffeApi.get('/guest');
       console.log(data);
       dispatch(setGuests({ guests: data.guests }));
+    } catch (error) {
+      throw handleError(error);
+    }
+  };
+
+  const getGuest = async (codeQr:string) => {
+    try {
+      const { data } = await coffeApi.get(`/guest/${codeQr}`);
+      console.log(data);
+      dispatch(setGuest({ guest: data }));
     } catch (error) {
       throw handleError(error);
     }
@@ -35,9 +45,11 @@ export const useGuestStore = () => {
   };
   return {
     //* Propiedades
+    guest,
     guests,
     //* Métodos
     getGuests,
+    getGuest,
     deleteGuest,
   };
 };

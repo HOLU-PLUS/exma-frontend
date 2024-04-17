@@ -10,3 +10,5 @@ export * from './theth';
 export * from './payment';
 export * from './activity';
 export * from './attendance';
+export * from './availability';
+export * from './request';

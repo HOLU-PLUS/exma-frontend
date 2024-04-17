@@ -3,12 +3,11 @@ import { Grid } from '@mui/material';
 import Avatar from '@mui/material/Avatar';
 import PhotoCameraIcon from '@mui/icons-material/PhotoCamera';
 import Badge from '@mui/material/Badge';
-import { useAuthStore, useLogoutStore } from '@/hooks';
+import { useGuestStore } from '@/hooks';
 import QRCode from 'react-qr-code';
 
 export const ProfileCard = () => {
-  const { user } = useAuthStore();
-  const { startLogout } = useLogoutStore();
+  const { guest } = useGuestStore();
   return (
     <Grid container direction="column" justifyContent="center" alignItems="center">
       <Grid item sx={{ p: '1.5rem 0rem', textAlign: 'center' }}>
@@ -19,7 +18,7 @@ export const ProfileCard = () => {
             <PhotoCameraIcon
               sx={{
                 border: '5px solid white',
-                backgroundColor: '#ff558f',
+                backgroundColor: '#f2f2f2',
                 borderRadius: '50%',
                 padding: '.2rem',
                 width: 35,
@@ -35,12 +34,12 @@ export const ProfileCard = () => {
         </Badge>
 
         {/* DESCRIPTION */}
-        <Typography variant="h6">{user}</Typography>
+        <Typography variant="h6">{guest.name}</Typography>
         <Typography color="text.secondary">sd</Typography>
       </Grid>
       <QRCode
         style={{ height: 'auto', maxWidth: '50vh', width: '50%' }}
-        value={localStorage.getItem('qr')!}
+        value={guest.codeQr}
       />
     </Grid>
   );

@@ -5,8 +5,12 @@ export const guestSlice = createSlice({
   name: 'guest',
   initialState: {
     guests: [] as GuestModel[],
+    guest: null as GuestModel|null,
   },
   reducers: {
+    setGuest: (state, action) => {
+      state.guest = action.payload.guest;
+    },
     setGuests: (state, action) => {
       state.guests = action.payload.guests;
     },
@@ -31,4 +35,4 @@ export const guestSlice = createSlice({
 
 
 // Action creators are generated for each case reducer function
-export const { setGuests, setAddGuest, setUpdateGuest, setDeleteGuest } = guestSlice.actions;
+export const { setGuest, setGuests, setAddGuest, setUpdateGuest, setDeleteGuest } = guestSlice.actions;
