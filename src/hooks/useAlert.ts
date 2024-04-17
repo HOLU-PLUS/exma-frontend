@@ -24,15 +24,19 @@ export const useAlertStore = () => {
 
   const showInput = async (title:string) => {
     const { value: text } = await Swal.fire({
-      title,
-      icon: 'warning',
+      title: title,
+      text: 'Revisa tu correo, para obtener el código',
+      input: "text",
+      inputAttributes: {
+        autocapitalize: "off"
+      },
       showCancelButton: true,
+      showLoaderOnConfirm: true,
       confirmButtonColor: '#0B815A',
       confirmButtonText: 'Confirmar',
       cancelButtonColor: '#F04438',
       cancelButtonText: 'Cancelar',
       reverseButtons: true,
-      input: "textarea",
       inputPlaceholder: "Escribe el código",
       inputValidator: (value) => {
         if (!value) {

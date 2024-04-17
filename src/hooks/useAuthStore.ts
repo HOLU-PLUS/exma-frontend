@@ -55,7 +55,8 @@ export const useAuthStore = () => {
 
   const inputCodeValidation = async (data: any) => {
     localStorage.setItem('tokenAux', data.token);
-    const code: string = await showInput(data.title);
+    const code: string = await showInput(data.message);
+    if(!code)return;
     const body = { code };
     try {
       const { data } = await coffeApi.post('auth/validate-email', body);
