@@ -1,6 +1,6 @@
 import { useDispatch, useSelector } from 'react-redux';
 import { coffeApi } from '@/services';
-import { onLogin, onLoginCustomer, onLogout, setRoleUser } from '@/store';
+import { onLogin, onLogout, setRoleUser } from '@/store';
 import { useAlertStore, useErrorStore } from '.';
 
 export const useAuthStore = () => {
@@ -31,12 +31,13 @@ export const useAuthStore = () => {
       const { data } = await coffeApi.post('/auth/guest/', body);
       console.log(data);
       if (data.statusCode == 1) return inputCodeValidation(data);
-      const user = `${data.user.name} ${data.user.lastName}`;
-      const qr = data.user.guest.codeQr;
+      // const user = `${data.user.name} ${data.user.lastName}`;
+      // const qr = data.user.guest.codeQr;
       localStorage.setItem('tokenCustomer', data.token);
-      localStorage.setItem('user', user);
-      localStorage.setItem('qr', qr);
-      dispatch(onLoginCustomer(user));
+      // localStorage.setItem('user', user);
+      // localStorage.setItem('qr', qr);
+      // dispatch(onLoginCustomer(user));
+      return data;
     } catch (error) {
       throw handleError(error);
     }
@@ -70,16 +71,27 @@ export const useAuthStore = () => {
 
   const checkAuthToken = async () => {
     const token = localStorage.getItem('token');
+    const tokenCustomer = localStorage.getItem('tokenCustomer');
     if (token) {
       const user = localStorage.getItem('user');
       dispatch(onLogin(user));
       const role = JSON.parse(localStorage.getItem('role')!);
       dispatch(setRoleUser({ role: role }));
     } else {
-      localStorage.clear();
-      dispatch(onLogout());
+      if(!tokenCustomer){
+        localStorage.clear();
+        dispatch(onLogout());
+      }
     }
   };
+
+  const checkAuthGuest = () =>{
+    const tokenCustomer = localStorage.getItem('tokenCustomer');
+    if (tokenCustomer) {
+      return true;
+    }
+    return false;
+  }
 
   return {
     //* Propiedades
@@ -91,6 +103,7 @@ export const useAuthStore = () => {
     authGuest,
     registerGuest,
     checkAuthToken,
+    checkAuthGuest,
   };
 };
 

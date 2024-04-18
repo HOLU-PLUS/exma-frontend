@@ -3,6 +3,7 @@ import { useAuthStore, useForm } from "@/hooks"
 import { Visibility, VisibilityOff } from "@mui/icons-material"
 import { IconButton, Typography } from "@mui/material"
 import { useState } from "react"
+import { useNavigate } from "react-router-dom"
 
 const loginFormFields = {
   email: '',
@@ -15,6 +16,7 @@ const formValidations = {
 
 export const LoginCustomer = () => {
 
+  const navigate = useNavigate();
   const { authGuest } = useAuthStore();
 
   const [formSubmitted, setFormSubmitted] = useState(false);
@@ -22,11 +24,13 @@ export const LoginCustomer = () => {
 
 
 
-  const loginSubmit = (event: any) => {
+  const loginSubmit = async (event: any) => {
     event.preventDefault();
     setFormSubmitted(true);
     if (!isFormValid) return;
-    authGuest({ email, password });
+    const { user } = await authGuest({ email, password });
+    //redireccionar
+    navigate(`/profile/${user.guest.codeQr}`)
   }
 
   const [showPassword, setShowPassword] = useState(false);

@@ -1,21 +1,33 @@
 
 import { getMessagesES, localizer } from '@/helpers';
+import { useavailabilityStore } from '@/hooks';
+import { AvailabilityModel } from '@/models';
 import { Paper } from '@mui/material';
+import { useEffect } from 'react';
 import { Calendar, Views } from 'react-big-calendar';
 
-export const CalendarDiary = () => {
+interface Props {
+  codeQr: string;
+}
+export const CalendarDiary = (props:Props) => {
+  const { codeQr } = props;
+
+  const {availabilities,getAvailabilitiesByGuest} = useavailabilityStore();
+  useEffect(() => {
+    getAvailabilitiesByGuest(codeQr)
+  }, [])
+  
   return (
     <Paper sx={{ p: 0.5, borderRadius: '10px' }}>
     <Calendar
       culture="es"
       localizer={localizer}
-      // events={[
-      //   ...events.map((event: EventModel) => ({
-      //     title: event.name,
-      //     ...event,
-      //   })),
-      // ]}
-      style={{ height: `60vh`, cursor: 'pointer' }}
+      events={[
+        ...availabilities.map((event: AvailabilityModel) => ({
+          ...event,
+        })),
+      ]}
+      style={{ height: `47vh`, cursor: 'pointer' }}
       messages={getMessagesES()}
       eventPropGetter={() => {
         return {

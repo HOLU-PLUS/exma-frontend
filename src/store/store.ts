@@ -11,6 +11,7 @@ import {
     eventSlice,
     staffSlice,
     attendanceSlice,
+    availabilitySlice,
 
 
 } from '.';
@@ -28,6 +29,7 @@ export const store = configureStore({
         theths: thethSlice.reducer,
         reports: reportSlice.reducer,
         attendances: attendanceSlice.reducer,
+        availabilities: availabilitySlice.reducer,
     },
     middleware: (getDefaultMiddleware) => getDefaultMiddleware({
         serializableCheck: false

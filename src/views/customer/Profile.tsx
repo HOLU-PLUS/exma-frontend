@@ -17,14 +17,14 @@ export const Profile = () => {
     <>
     {
       guest &&
-    <Grid container direction={{ xs: 'column', md: 'row' }}>
-      <Grid item xs={12} sm={3}>
-        <ProfileCard />
+      <Grid container direction={{ xs: 'column', md: 'row' }}>
+        <Grid item xs={12} sm={3}>
+          <ProfileCard />
+        </Grid>
+        <Grid item xs={12} sm={9}>
+          <SettingsCard codeQr={params.codeQr??''}/>
+        </Grid>
       </Grid>
-      <Grid item xs={12} sm={9}>
-        <SettingsCard />
-      </Grid>
-    </Grid>
     }
     </>
   );

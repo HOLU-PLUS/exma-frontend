@@ -7,7 +7,12 @@ import Tab from '@mui/material/Tab';
 import { AccountView, MeetingView, RequestView } from './content';
 import { DiaryView } from './content/diary';
 
-export const SettingsCard = () => {
+interface Props {
+  codeQr: string;
+}
+
+export const SettingsCard = (props:Props) => {
+  const { codeQr } = props;
   const [value, setValue] = React.useState('one');
 
   const handleChange = (newValue: string) => {
@@ -30,7 +35,7 @@ export const SettingsCard = () => {
       <Divider></Divider>
       <Grid container direction={{ xs: 'column', md: 'row' }}>
         <Grid justifyContent={{ xs: 'center', md: 'flex-end' }} item xs={12}>
-          {value === 'one' && <DiaryView />}
+          {value === 'one' && <DiaryView codeQr={codeQr} />}
           {value === 'two' && <RequestView />}
           {value === 'three' && <MeetingView />}
           {value === 'three' && <AccountView />}

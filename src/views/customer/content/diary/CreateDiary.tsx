@@ -1,5 +1,5 @@
 import { ComponentDate } from '@/components';
-import { useForm } from '@/hooks';
+import { useForm, useavailabilityStore } from '@/hooks';
 import { AvailabilityModel, FormAvailabilityModel, FormAvailabilityValidations } from '@/models';
 import { Button, Dialog, DialogActions, DialogContent, DialogTitle, Grid } from '@mui/material';
 import { FormEvent, useState } from 'react';
@@ -22,6 +22,7 @@ const formValidations: FormAvailabilityValidations = {
 
 export const CreateDiary = (props: createProps) => {
   const { open, handleClose, item } = props;
+  const { createAvailability, updateAvailability } = useavailabilityStore();
   const {
     start,
     end,
@@ -38,17 +39,11 @@ export const CreateDiary = (props: createProps) => {
     event.preventDefault();
     setFormSubmitted(true);
     if (!isFormValid) return;
-    // if (item == null) {
-    //   await postCreateRole({
-    //     name: name.trim(),
-    //     permissions: permissions.map((e: PermissionModel) => e.id),
-    //   });
-    // } else {
-    //   await putUpdateRole(item.id, {
-    //     name: name.trim(),
-    //     permissions: permissions.map((e: PermissionModel) => e.id),
-    //   });
-    // }
+    if (item == null) {
+      await createAvailability({ start, end });
+    } else {
+      await updateAvailability(item.id, { start, end });
+    }
     handleClose();
     onResetForm();
   };

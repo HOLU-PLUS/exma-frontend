@@ -9,5 +9,6 @@ export * from './stageType/stageTypeSlice';
 export * from './theth/thethSlice';
 export * from './report/reportSlice';
 export * from './attendance/attendanceSlice';
+export * from './availability/availabilitySlice';
 
 export * from './store';

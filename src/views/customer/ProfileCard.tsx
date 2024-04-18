@@ -1,13 +1,18 @@
 import Typography from '@mui/material/Typography';
-import { Grid } from '@mui/material';
+import { Grid, SvgIcon } from '@mui/material';
 import Avatar from '@mui/material/Avatar';
 import PhotoCameraIcon from '@mui/icons-material/PhotoCamera';
 import Badge from '@mui/material/Badge';
-import { useGuestStore } from '@/hooks';
+import { useAuthStore, useGuestStore, useLogoutStore } from '@/hooks';
 import QRCode from 'react-qr-code';
+import { ComponentButton } from '@/components';
+import { Add } from '@mui/icons-material';
 
 export const ProfileCard = () => {
   const { guest } = useGuestStore();
+  const { startLogout } = useLogoutStore();
+
+  const { checkAuthGuest } = useAuthStore();
   return (
     <Grid container direction="column" justifyContent="center" alignItems="center">
       <Grid item sx={{ p: '1.5rem 0rem', textAlign: 'center' }}>
@@ -37,10 +42,19 @@ export const ProfileCard = () => {
         <Typography variant="h6">{guest.name}</Typography>
         <Typography color="text.secondary">sd</Typography>
       </Grid>
-      <QRCode
-        style={{ height: 'auto', maxWidth: '50vh', width: '50%' }}
-        value={guest.codeQr}
-      />
+      <QRCode style={{ height: 'auto', maxWidth: '50vh', width: '50%' }} value={guest.codeQr} />
+      {checkAuthGuest() && (
+        <>
+          <ComponentButton
+            text="Buscar con QR"
+            onClick={() => {
+              // resetEvent(null);
+              // handleDialog(true);
+            }}
+          />
+          <ComponentButton text="Salir Sesión" onClick={() => startLogout()} />
+        </>
+      )}
     </Grid>
   );
 };
