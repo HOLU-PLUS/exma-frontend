@@ -10,5 +10,6 @@ export * from './theth/thethSlice';
 export * from './report/reportSlice';
 export * from './attendance/attendanceSlice';
 export * from './availability/availabilitySlice';
+export * from './request/requestSlice';
 
 export * from './store';

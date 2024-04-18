@@ -33,14 +33,6 @@ const theme = createTheme({
     },
   },
 });
-// Carga la fuente personalizada
-const fontStyle = new FontFace('poppins', `url(./src/assets/fonts/Poppins-Regular.woff2)`);
-
-// Aplica la fuente personalizada
-fontStyle.load().then(() => {
-  document.fonts.add(fontStyle);
-});
-
 
 ReactDOM.createRoot(document.getElementById('root')!).render(
   // <React.StrictMode>

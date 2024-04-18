@@ -56,7 +56,7 @@ export const CreateDiary = (props: createProps) => {
       <form onSubmit={sendSubmit}>
         <DialogContent sx={{ display: 'flex' }}>
           <Grid container>
-            <Grid item xs={12} sm={6} sx={{ padding: '5px' }}>
+            <Grid item xs={12} sm={12} sx={{ padding: '5px' }}>
               <ComponentDate
                 title="Fecha Inicio"
                 date={start}
@@ -66,7 +66,7 @@ export const CreateDiary = (props: createProps) => {
                 helperText={formSubmitted ? startValid : ''}
               />
             </Grid>
-            <Grid item xs={12} sm={6} sx={{ padding: '5px' }}>
+            <Grid item xs={12} sm={12} sx={{ padding: '5px' }}>
               <ComponentDate
                 title="Fecha Fin"
                 date={end}
@@ -81,8 +81,8 @@ export const CreateDiary = (props: createProps) => {
         <DialogActions>
           <Button
             onClick={() => {
-              // onResetForm();
-              // handleClose();
+              onResetForm();
+              handleClose();
             }}
           >
             Cancelar

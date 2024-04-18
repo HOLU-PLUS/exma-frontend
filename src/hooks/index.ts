@@ -13,3 +13,4 @@ export * from './useSpeakerStore';
 export * from './useEventStore';
 export * from './useReportStore';
 export * from './useAvailabilityStore';
+export * from './useRequestStore';

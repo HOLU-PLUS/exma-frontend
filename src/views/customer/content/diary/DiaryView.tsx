@@ -18,6 +18,7 @@ export const DiaryView = (props: Props) => {
   const [itemAvailability, setAvailabilityEdit] = useState<AvailabilityModel | null>(null);
 
   const handleDialog = (value: boolean) => {
+    if(!value) setAvailabilityEdit(null);
     setopenDialog(value);
   };
 
@@ -29,7 +30,6 @@ export const DiaryView = (props: Props) => {
           <ComponentButton
             text="Registrar Disponibilidad"
             onClick={() => {
-              // resetEvent(null);
               handleDialog(true);
             }}
             startIcon={
@@ -41,7 +41,13 @@ export const DiaryView = (props: Props) => {
         )}
       </Stack>
       <div style={{ height: 10 }} />
-      <CalendarDiary codeQr={codeQr} />
+      <CalendarDiary
+        codeQr={codeQr}
+        onPress={(availability) => {
+          setAvailabilityEdit(availability);
+          handleDialog(true);
+        }}
+      />
       {openDialog && (
         <CreateDiary
           open={openDialog}

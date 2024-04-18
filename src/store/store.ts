@@ -12,6 +12,7 @@ import {
     staffSlice,
     attendanceSlice,
     availabilitySlice,
+    requestSlice,
 
 
 } from '.';
@@ -30,6 +31,7 @@ export const store = configureStore({
         reports: reportSlice.reducer,
         attendances: attendanceSlice.reducer,
         availabilities: availabilitySlice.reducer,
+        requests: requestSlice.reducer,
     },
     middleware: (getDefaultMiddleware) => getDefaultMiddleware({
         serializableCheck: false

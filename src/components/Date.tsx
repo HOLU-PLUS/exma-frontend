@@ -1,6 +1,6 @@
 import { LocalizationProvider } from '@mui/x-date-pickers/LocalizationProvider';
 import { AdapterDayjs } from '@mui/x-date-pickers/AdapterDayjs';
-import { DatePicker } from '@mui/x-date-pickers';
+import { DateTimePicker } from '@mui/x-date-pickers';
 import dayjs from 'dayjs';
 import 'dayjs/locale/es';
 import { Typography } from '@mui/material';
@@ -23,7 +23,7 @@ export const ComponentDate = (props: Props) => {
   return (
     <>
       <LocalizationProvider adapterLocale="es" dateAdapter={AdapterDayjs}>
-        <DatePicker
+        <DateTimePicker
           value={dayjs(date)}
           label={title}
           minDate={minDate ? dayjs(minDate) : null}
